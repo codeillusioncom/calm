@@ -21,6 +21,7 @@ module Calm
 
       private INSTANCE = HTTP::Server.new([
         ::HTTP::ErrorHandler.new,
+        Handler::Routing.new,
       ])
     end
   end

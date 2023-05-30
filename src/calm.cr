@@ -1,11 +1,17 @@
 require "./http/context"
-require "./http/server"
+require "./http/*"
+require "./http/handlers/*"
+require "./http/routing/**"
 
 # TODO: Write documentation for `Calm`
 module Calm
   VERSION = "0.1.0"
 
-  # TODO: Put your code here
+  @@routes : Routing::Map = Routing::Map.new
+
+  def self.routes
+    @@routes
+  end
 end
 
 Calm::Http::Server.start
