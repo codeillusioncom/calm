@@ -4,6 +4,10 @@ version: 0.1.0
 authors:
   - codemaker <codemaker@codeillusion.com>
 
+dependencies:
+  crinja:
+    github: straight-shoota/crinja
+
 crystal: 1.8.1
 
 license: MIT

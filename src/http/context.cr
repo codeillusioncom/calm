@@ -1,7 +1,7 @@
 module HTTP
   class Server
     class Context
-      # property username : String?
+      property username : String?
     end
   end
 end
