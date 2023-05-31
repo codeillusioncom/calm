@@ -71,6 +71,10 @@ module Calm
         @response.print template.render(locals)
       end
 
+      def redirect_to(location : String | URI, status : HTTP::Status = :found)
+        @response.redirect(location, status)
+      end
+
       private def add_part_name_to_params(name : String, value : String)
         result = /(.*)\[(.*)\]/.match(name)
         if result && result.size == 3

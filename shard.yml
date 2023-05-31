@@ -7,6 +7,8 @@ authors:
 dependencies:
   crinja:
     github: straight-shoota/crinja
+  pg:
+    github: will/crystal-pg
   sentry:
     github: samueleaton/sentry
     branch: master

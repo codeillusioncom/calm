@@ -2,6 +2,7 @@ require "crinja"
 require "sentry"
 
 require "./cli/**"
+require "./db/**"
 require "./http/context"
 require "./http/*"
 require "./http/handlers/format/*"
