@@ -1,6 +1,7 @@
 module Calm
   module Handler
     alias ParamsHash = Hash(String, Routing::Parameter::Types)
+    alias SupportedTypes = String | Int32 | Int64 | Float32 | Float64 | Bool
 
     abstract class ApplicationHandler
       # #include Calm::Handler::ApplicationHelper
@@ -59,7 +60,7 @@ module Calm
         Http::Response::MethodNotAllowed.new(self.class.http_method_names)
       end
 
-      def render(view_name, locals = {} of String | Symbol => String | Int32 | Int64 | Float32 | Float64 | Bool)
+      def render(view_name, locals = {} of String | Symbol => SupportedTypes)
         env = ::Crinja.new
         controller_name = self.class.to_s.underscore.split("_").first
         env.loader = ::Crinja::Loader::FileSystemLoader.new("src/views/#{controller_name}")

@@ -5,7 +5,7 @@ module Calm
   module Http
     class Server
       def self.start
-        address = Socket::IPAddress.new "127.0.0.1", 3001
+        address = Socket::IPAddress.new Calm.settings.host, Calm.settings.port
 
         Log.info { "Starting server..." }
 

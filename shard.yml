@@ -7,6 +7,9 @@ authors:
 dependencies:
   crinja:
     github: straight-shoota/crinja
+  sentry:
+    github: samueleaton/sentry
+    branch: master
 
 crystal: 1.8.1
 
