@@ -5,7 +5,7 @@ module Calm
         @@command_name = "serve"
 
         def setup
-          @parser.on("server", "start server") do
+          @parser.on("server", "Start server") do
             parser.banner = "Usage: calm serve [arguments]"
             @parser.on("-b IP", "--bind=IP", "Specify IP to bind to") { |ip| Calm.settings.host = ip }
             @parser.on("-p PORT", "--port=PORT", "Specify port to bind to") { |port| Calm.settings.port = port.to_i }

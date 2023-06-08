@@ -84,7 +84,6 @@ module Calm
                     value = rs.read({{type[:type]}})
                     obj[{{key.stringify}}] = value
                     obj["{{key.id}}_old"] == value
-                    pp "#{obj[{{key.stringify}}]} - #{obj["{{key.id}}_old"]}"
                   rescue
                     obj[{{key.stringify}}] = nil
                     obj["{{key.id}}_old"] == nil

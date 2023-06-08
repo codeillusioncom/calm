@@ -16,7 +16,6 @@ module Calm
           next if key.ends_with?("_old")
           next if self.class.id_key == key
 
-          puts "#{self[key]} - #{self["#{key}_old"]}"
           return true if self[key] != self["#{key}_old"]
         end
         return false
