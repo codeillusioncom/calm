@@ -12,7 +12,7 @@ module Calm
 
       def dirty?
         # pp self.class.id_key
-        STRUCT.each do |key, value|
+        structure.each do |key, value|
           next if key.ends_with?("_old")
           next if self.class.id_key == key
 
@@ -26,7 +26,7 @@ module Calm
         # before_validation
         res = valid?
         if throw_exception_on_error
-          raise Calm::Validation::ValidationError.new unless res
+          raise Calm::Db::Validation::ValidationError.new unless res
         else
           return false if res == false
         end
@@ -67,7 +67,8 @@ module Calm
       private def save
         # Calm::Db::Psql.update(self.class.table_name, self.class.id_key, self[self.class.id_key], @props.select { |k, v| k.ends_with?("_old") }, @props.select { |k, v| !k.ends_with?("_old") }, STRUCTure)
         data = Hash(String, Bool | String | Int32 | Int64 | Nil | Array(Symbol)).new
-        STRUCT.each do |name, type|
+
+        structure.each do |name, type|
           data[name] = self[name]
         end
 

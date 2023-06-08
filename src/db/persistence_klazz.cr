@@ -9,20 +9,16 @@ module Calm
         "id"
       end
 
-      def structure
-        Struct
-      end
-
       def table_name
         self.name.downcase
       end
 
       def create_table_script
-        Calm::Db::Psql.create_table_script(self.table_name, structure, self.id_key)
+        Calm::Db::Psql.create_table_script(self.table_name, @@STRUCT, self.id_key)
       end
 
       def create_table
-        Calm::Db::Psql.create_table(self.table_name, structure, self.id_key)
+        Calm::Db::Psql.create_table(self.table_name, @@STRUCT, self.id_key)
       end
 
       def self.create_table_if_not_exists
@@ -38,7 +34,7 @@ module Calm
       end
 
       def all
-        return Calm::Orm::ResultSet(self).new("select * from \"#{self.table_name}\"")
+        return Calm::Db::ResultSet(self).new("select * from \"#{self.table_name}\"")
       end
     end
   end

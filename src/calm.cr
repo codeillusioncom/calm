@@ -8,6 +8,7 @@ require "./http/*"
 require "./http/handlers/format/*"
 require "./http/handlers/*"
 require "./http/policies/*"
+require "./http/response/*"
 require "./http/routing/**"
 require "./settings/**"
 
@@ -20,7 +21,7 @@ module Calm
   @@settings : Calm::Settings?
 
   def self.env
-    @@env
+    @@env ||= Env.new
   end
 
   def self.routes

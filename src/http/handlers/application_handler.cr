@@ -3,7 +3,7 @@ module Calm
     alias ParamsHash = Hash(String, Routing::Parameter::Types)
     alias SupportedTypes = String | Int32 | Int64 | Float32 | Float64 | Bool
 
-    abstract class ApplicationHandler
+    class ApplicationHandler
       # #include Calm::Handler::ApplicationHelper
       include Calm::Mime
 
@@ -33,18 +33,32 @@ module Calm
         end if !boundary.nil? && !@request.body.nil?
       end
 
-      def call_method(name)
-        {% for method in @type.methods.map(&.name) %}
-          if "{{ method }}" == name
-            raise AccessDeniedException.new() unless {{ @type }}Policy.new(@context.username).{{ method.id }}?
+      macro call_method(method_name)
+          {% for method in (@type.methods.map(&.name)) %}
+          {% if method.stringify == method_name %}
             {{ method.id }}
-          end
-        {% end %}
+          {% end %}
+          {% end %}
       end
 
       def process_dispatch
         begin
-          call_method(@matcher.action.to_s)
+          case @matcher.action
+          when :index
+            call_method("index")
+          when :show
+            call_method("show")
+          when :new
+            call_method("new")
+          when :create
+            call_method("create")
+          when :edit
+            call_method("edit")
+          when :update
+            call_method("update")
+          when :destroy
+            call_method("destroy")
+          end
           # #persist_flash
         rescue e : AccessDeniedException
           # TODO: other types
@@ -61,14 +75,19 @@ module Calm
       end
 
       def render(view_name, locals = {} of String | Symbol => SupportedTypes)
-        env = ::Crinja.new
-        controller_name = self.class.to_s.underscore.split("_").first
-        env.loader = ::Crinja::Loader::FileSystemLoader.new("src/views/#{controller_name}")
+        # env = ::Crinja.new
+        # controller_name = self.class.to_s.underscore.split("_").first
+        # env.loader = ::Crinja::Loader::FileSystemLoader.new("src/views/#{controller_name}")
 
-        template = env.get_template("/#{@matcher.action}.#{@format}.j2")
+        # template = env.get_template("/#{@matcher.action}.#{@format}.j2")
+
+        res = ApplicationView.new.index do
+          HomeView.new.show
+        end
 
         @response.content_type = MIME_TYPES[@format]
-        @response.print template.render(locals)
+        # @response.print template.render(locals)
+        @response.print res
       end
 
       def redirect_to(location : String | URI, status : HTTP::Status = :found)

@@ -1,6 +1,6 @@
 module Calm
-  module Policies
-    class ApplicationPolicy
+  module Handler
+    class ApplicationHandlerPolicy
       property username : String?
 
       def initialize

@@ -10,10 +10,14 @@ module Calm
       end
 
       include Calm::DbConverters
-      STRUCT = Hash(String, Types).new
+      @@STRUCT = Hash(String, Types).new
 
-      def struct
-        return STRUCT
+      def structure
+        return @@STRUCT
+      end
+
+      def self.structure
+        return @@STRUCT
       end
 
       # Returns true if the record is persisted, i.e. it’s not a new record and it was not destroyed, otherwise returns false.
@@ -28,7 +32,7 @@ module Calm
       macro mapping(properties)
         {% for key, type in properties %}
           {% properties[key] = {type: type} unless type.is_a?(HashLiteral) || type.is_a?(NamedTupleLiteral) %}
-          STRUCT[{{key.stringify}}] = {{type}}
+          @@STRUCT[{{key.stringify}}] = {{type}}
         {% end %}
 
         {% for key, type in properties %}
@@ -67,7 +71,6 @@ module Calm
           {% end %}
         end
 
-        #class Calm::Orm::ResultSet(T)
         def call(command)
           objs = [] of self
 
@@ -101,7 +104,7 @@ module Calm
       def instance_values
         data = Hash(String, String | Bool | Int32 | Int64 | Nil | Array(Symbol)).new
         {% for type in @type.instance_vars %}
-        if STRUCT.keys.includes?({{type.stringify}})
+        if @@STRUCT.keys.includes?({{type.stringify}})
           data[{{type.stringify}}] = self[{{type.stringify}}]
         end
         {% end %}
@@ -110,8 +113,7 @@ module Calm
 
       def [](variable)
         {% for ivar in @type.instance_vars %}
-        {{ parse_type("STRUCT").resolve }} 
-        if STRUCT.keys.includes? {{ivar.stringify}}
+        if @@STRUCT.keys.includes? {{ivar.stringify}}
           if "{{ivar.id}}" == variable.to_s
             return @{{ivar}}
           elsif "{{ivar.id}}_old" == variable.to_s
@@ -122,7 +124,7 @@ module Calm
 
       def []=(variable, value)
         {% for ivar in @type.instance_vars %}
-        if STRUCT.keys.includes? {{ivar.stringify}}
+        if @@STRUCT.keys.includes? {{ivar.stringify}}
           if "{{ivar.id}}" == variable.to_s
             if value.is_a?({{ ivar.type.id }})
               @{{ivar}} = value

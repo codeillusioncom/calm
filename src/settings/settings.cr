@@ -5,13 +5,17 @@ module Calm
     property host
     property log_level
     property port
+    property items_on_page
+    property project_name
 
     def initialize
-      @database_url = "postgres://admin:adminadmin@localhost:5432/calm_#{Calm.env}"
+      @project_name = Dir.current.split("/").last
+      @database_url = "postgres://admin:adminadmin@localhost:5432/#{@project_name}_#{Calm.env}"
       @debug = false
       @host = "127.0.0.1"
       @log_level = ::Log::Severity::Info
       @port = 3001
+      @items_on_page = 25
     end
 
     def self.register_settings_namespace(ns : String)

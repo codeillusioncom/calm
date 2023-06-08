@@ -56,7 +56,7 @@ describe Calm::Orm::Base do
 
   it "check validate" do
     user = User.new
-    expect_raises(Calm::Validation::ValidationError) do
+    expect_raises(Calm::Db::Validation::ValidationError) do
       user.validate!.should eq(false)
     end
   end

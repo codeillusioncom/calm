@@ -87,18 +87,14 @@ module Calm
           command += "SET " if data.size > 0
           args = [] of Bool | String | Int32 | Int64 | Nil | Array(Symbol)
 
-          i = 1
+          i = 0
           sets = data.map do |k, v|
             #  # args << convert_type_from_db_to_crystal(k, v)
             args << v
-            "\"#{k}\" = $#{i}"
             i += 1
+            "\"#{k}\" = $#{i}"
           end.join(", ")
-          # old_id = "#{id}_old"
           command += "#{sets} WHERE \"#{id}\" = '#{id_value}';"
-          pp command
-          pp args
-          pp db.exec command, args: args
           return true
         end
       end
@@ -107,7 +103,7 @@ module Calm
         DB.open Calm.settings.database_url do |db|
           command = "delete from \"#{table_name}\" "
           command += "where #{id}=?"
-          args = [] of Calm::Orm::BaseStore::Types
+          args = [] of Calm::Db::BaseStore::Types
           args << id_value
           db.exec command, args: args
         end

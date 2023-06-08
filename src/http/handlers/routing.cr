@@ -15,7 +15,6 @@ module Calm
 
         private def process(context)
           matched = Calm.routes.resolve(context.request.path)
-
           matched.handler.new(context, matched).process_dispatch
         end
       end
