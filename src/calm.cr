@@ -10,6 +10,7 @@ require "./http/handlers/*"
 require "./http/policies/*"
 require "./http/response/*"
 require "./http/routing/**"
+require "./http/views/**"
 require "./settings/**"
 
 # TODO: Write documentation for `Calm`

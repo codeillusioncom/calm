@@ -7,6 +7,10 @@ authors:
 dependencies:
   crinja:
     github: straight-shoota/crinja
+  form_builder:
+    github: westonganger/form_builder.cr
+  jwt:
+    github: crystal-community/jwt
   pg:
     github: will/crystal-pg
   sentry:

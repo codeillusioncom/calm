@@ -23,7 +23,10 @@ module Calm
 
       private INSTANCE = HTTP::Server.new([
         ::HTTP::ErrorHandler.new,
+        Handler::Logger.new,
+        Handler::Auth.new,
         Handler::Routing.new,
+        HTTP::StaticFileHandler.new("./src/static"),
       ])
 
       private def self.warn_if_pending_migrations

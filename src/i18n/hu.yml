@@ -1,0 +1,30 @@
+hu:
+  i18n:
+    date:
+      abbr_day_names: [hét, ked, sze, csü, pén, szo, vas]
+      abbr_month_names: [jan, feb, már, ápr, máj, jún, júl, aug, sze, okt, nov, dec]
+      day_names: [hétfő, kedd, szerda, csütörtök, péntek, szombat, vasárnap]
+      month_names: [január, február, március, április, május, június,
+                    július, augusztus, szeptember, október, november, december]
+      formats:
+        default: "%Y. %m. %d."
+        long: "%Y. %B %d."
+        short: "%b. %d."
+    time:
+      am: de
+      formats:
+        default: "%Y. %b. %d. %a %H:%M:%S %z"
+        long: "%Y. %B %d. %H:%M"
+        short: "%b. %d. %H:%M"
+      pm: du
+    number:
+      formats:
+        default:
+          delimiter: " "
+          separator: ","
+         decimal_places: null
+          group: 3
+          only_significant: false
+  cli:
+    usage: "Használat: calm [parancs]"
+    registering: "Registering %{command_klass}"

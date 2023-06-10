@@ -4,6 +4,19 @@ module Calm
     alias SupportedTypes = String | Int32 | Int64 | Float32 | Float64 | Bool
 
     class ApplicationHandler
+      @@view_classes = Hash(String, Calm::Http::BaseView.class).new
+
+      def self.get_class(name)
+        puts "get class..."
+        pp @@view_classes
+        pp @@view_classes.size
+        return @@view_classes[name]
+      end
+
+      def self.view_classes
+        @@view_classes
+      end
+
       # #include Calm::Handler::ApplicationHelper
       include Calm::Mime
 
@@ -31,17 +44,53 @@ module Calm
         HTTP::FormData.parse(@request) do |part|
           add_part_name_to_params(part.name, part.body.gets_to_end)
         end if !boundary.nil? && !@request.body.nil?
+
+        puts "itt a classok"
+        pp @@view_classes
       end
 
       macro call_method(method_name)
-          {% for method in (@type.methods.map(&.name)) %}
-          {% if method.stringify == method_name %}
-            {{ method.id }}
-          {% end %}
-          {% end %}
+        {% for method in (@type.methods.map(&.name)) %}
+        {% if method.stringify == method_name %}
+          {{ method.id }}
+        {% end %}
+        {% end %}
+      end
+
+      def default
+        # TODO: not implemented
+      end
+
+      def index
+        default
+      end
+
+      def show
+        default
+      end
+
+      def new
+        default
+      end
+
+      def create
+        default
+      end
+
+      def edit
+        default
+      end
+
+      def update
+        default
+      end
+
+      def destroy
+        default
       end
 
       def process_dispatch
+        Log.info { "Process dispatch: #{@matcher.action}" }
         begin
           case @matcher.action
           when :index
@@ -61,6 +110,7 @@ module Calm
           end
           # #persist_flash
         rescue e : AccessDeniedException
+          Log.info { "Access denied." }
           # TODO: other types
           # #@context.flash << HTTP::Server::Flash.new("danger", "Access denied! You don't have enough permission to view this page.")
           # @response.content_type = "text/html"
@@ -82,11 +132,15 @@ module Calm
         # template = env.get_template("/#{@matcher.action}.#{@format}.j2")
 
         res = ApplicationView.new.index do
-          HomeView.new.show
+          # HomeView.new.show
+          # render_class(self.class.to_s.split("Handler")[0])
+          puts "itten veszem ki"
+          ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
         end
 
         @response.content_type = MIME_TYPES[@format]
         # @response.print template.render(locals)
+        pp res
         @response.print res
       end
 
