@@ -7,9 +7,6 @@ module Calm
       @@view_classes = Hash(String, Calm::Http::BaseView.class).new
 
       def self.get_class(name)
-        puts "get class..."
-        pp @@view_classes
-        pp @@view_classes.size
         return @@view_classes[name]
       end
 
@@ -44,9 +41,6 @@ module Calm
         HTTP::FormData.parse(@request) do |part|
           add_part_name_to_params(part.name, part.body.gets_to_end)
         end if !boundary.nil? && !@request.body.nil?
-
-        puts "itt a classok"
-        pp @@view_classes
       end
 
       macro call_method(method_name)
@@ -134,13 +128,11 @@ module Calm
         res = ApplicationView.new.index do
           # HomeView.new.show
           # render_class(self.class.to_s.split("Handler")[0])
-          puts "itten veszem ki"
           ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
         end
 
         @response.content_type = MIME_TYPES[@format]
         # @response.print template.render(locals)
-        pp res
         @response.print res
       end
 

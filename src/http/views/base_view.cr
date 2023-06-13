@@ -3,9 +3,6 @@ module Calm
     class BaseView
       macro inherited
         def self._inherited
-        puts "inherited"
-        puts "finished"
-        pp {{@type.stringify}}
         Calm::Handler::ApplicationHandler.view_classes[{{@type.stringify}}] = {{ @type.id }}
       end
       _inherited
