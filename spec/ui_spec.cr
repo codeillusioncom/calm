@@ -58,7 +58,7 @@ describe Calm do
         end
         body do
           # Calm::Components.navbar(title: "Homeweb", root_url: "/", items: [{name: "Home", url: "/"}])
-          navbar(title: "Homeweb", root_url: "/", items: [{name: "Home", url: "/", active: true}])
+          navbar(title: "Homeweb", root_url: "/", items: [{name: "Home", url: "/", active: true}, {name: "About", url: "/about", active: false}, {name: "Sign in", url: "/sign_in"}])
           div %|class="container"| do
             "the content"
           end
@@ -86,6 +86,8 @@ describe Calm do
                   "          <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">\n" +
                   "            <li class=\"nav-item\">\n" +
                   "              <a class=\"nav-link active\" aria-current=\"page\" href=\"/\">Home</a>\n" +
+                  "              <a class=\"nav-link \" aria-current=\"page\" href=\"/about\">About</a>\n" +
+                  "              <a class=\"nav-link \" aria-current=\"page\" href=\"/sign_in\">Sign in</a>\n" +
                   "            </li>\n" +
                   "          </ul>\n" +
                   "        </div>\n" +

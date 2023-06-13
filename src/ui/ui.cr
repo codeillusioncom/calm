@@ -61,7 +61,9 @@ module Calm
             ul %|class="navbar-nav me-auto mb-2 mb-lg-0"| do
               li %|class="nav-item"| do
                 items.each do |item|
-                  a %|class="nav-link #{item["active"] ? "active" : ""}" aria-current="page" href="#{item["url"]}"|, item["name"]
+                  active = ""
+                  active = "active" if item.is_a?(NamedTuple(name: String, url: String, active: Bool)) && item["active"]
+                  a %|class="nav-link #{active}" aria-current="page" href="#{item["url"]}"|, item["name"]
                 end
               end
             end
