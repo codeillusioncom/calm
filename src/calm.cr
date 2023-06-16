@@ -12,6 +12,7 @@ require "./http/response/*"
 require "./http/routing/**"
 require "./http/views/**"
 require "./settings/**"
+require "./ui/**"
 
 # TODO: Write documentation for `Calm`
 module Calm
