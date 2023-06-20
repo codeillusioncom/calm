@@ -15,6 +15,7 @@ class SessionHandler < Calm::Handler::ApplicationHandler
   end
 
   def authenticate
+    puts "auth"
     respond_to do |format|
       format.html do
         username = @object["username"]

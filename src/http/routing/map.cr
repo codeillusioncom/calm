@@ -1,6 +1,12 @@
 module Calm
   module Routing
     class Map
+      @@routesHash = Hash(String, Calm::Handler::ApplicationHandler.class).new
+
+      def self.routesHash
+        @@routesHash
+      end
+
       getter rules
 
       def self.draw(&)

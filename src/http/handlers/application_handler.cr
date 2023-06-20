@@ -3,7 +3,7 @@ module Calm
     alias ParamsHash = Hash(String, Routing::Parameter::Types)
     alias SupportedTypes = String | Int32 | Int64 | Float32 | Float64 | Bool
 
-    class ApplicationHandler
+    abstract class ApplicationHandler
       @@view_classes = Hash(String, Calm::Http::BaseView.class).new
 
       def self.get_class(name)
@@ -28,6 +28,12 @@ module Calm
       getter request
       getter response
 
+      macro method_missing(call)
+        def {{call.name}}
+          false
+        end
+      end
+
       def initialize(@context : HTTP::Server::Context, @matcher)
         @request = @context.request
         @response = @context.response
@@ -43,75 +49,48 @@ module Calm
         end if !boundary.nil? && !@request.body.nil?
       end
 
-      macro call_method(method_name)
-        {% for method in (@type.methods.map(&.name)) %}
-        {% if method.stringify == method_name %}
-          {{ method.id }}
+      def process_dispatch(res)
+        Log.info { "Process dispatch: " }
+        puts "---"
+
+        # methods[@matcher.action.to_s]
+
+        # #persist_flash
+        # Log.info { "Access denied." }
+        # TODO: other types
+        # #@context.flash << HTTP::Server::Flash.new("danger", "Access denied! You don't have enough permission to view this page.")
+        # @response.content_type = "text/html"
+        # @response.print
+        # #persist_flash
+        # @response.redirect("/")
+        # end
+      end
+
+      def methods
+        puts "ős"
+      end
+
+      macro inherited
+        pp {{ @type.stringify }}
+      end
+
+      def [](variable)
+        {% for ivar in @type.instance_vars %}
+        if @@STRUCT.keys.includes? {{ivar.stringify}}
+          if "{{ivar.id}}" == variable.to_s
+            return @{{ivar}}
+          elsif "{{ivar.id}}_old" == variable.to_s
+          end
+        end
         {% end %}
-        {% end %}
+      end
+
+      def call_method(method_name)
+        # pp methods
       end
 
       def default
         # TODO: not implemented
-      end
-
-      def index
-        default
-      end
-
-      def show
-        default
-      end
-
-      def new
-        default
-      end
-
-      def create
-        default
-      end
-
-      def edit
-        default
-      end
-
-      def update
-        default
-      end
-
-      def destroy
-        default
-      end
-
-      def process_dispatch
-        Log.info { "Process dispatch: #{@matcher.action}" }
-        begin
-          case @matcher.action
-          when :index
-            call_method("index")
-          when :show
-            call_method("show")
-          when :new
-            call_method("new")
-          when :create
-            call_method("create")
-          when :edit
-            call_method("edit")
-          when :update
-            call_method("update")
-          when :destroy
-            call_method("destroy")
-          end
-          # #persist_flash
-        rescue e : AccessDeniedException
-          Log.info { "Access denied." }
-          # TODO: other types
-          # #@context.flash << HTTP::Server::Flash.new("danger", "Access denied! You don't have enough permission to view this page.")
-          # @response.content_type = "text/html"
-          # @response.print
-          # #persist_flash
-          @response.redirect("/")
-        end
       end
 
       private def handle_http_method_not_allowed
@@ -128,7 +107,7 @@ module Calm
         res = ApplicationView.new.index do
           # HomeView.new.show
           # render_class(self.class.to_s.split("Handler")[0])
-          ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
+          # ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
         end
 
         @response.content_type = MIME_TYPES[@format]
@@ -140,7 +119,7 @@ module Calm
         @response.redirect(location, status)
       end
 
-      private def add_part_name_to_params(name : String, value : String)
+      protected def add_part_name_to_params(name : String, value : String)
         result = /(.*)\[(.*)\]/.match(name)
         if result && result.size == 3
           @object[result[1].to_s] = Hash(String, String).new unless @object.has_key?(result[1].to_s)

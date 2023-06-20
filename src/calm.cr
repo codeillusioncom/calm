@@ -19,7 +19,7 @@ module Calm
   VERSION = "0.1.0"
 
   @@env : Env?
-  @@routes : Routing::Map = Routing::Map.new
+  @@routes : Calm::Routes = Calm::Routes.new
   @@settings : Calm::Settings?
 
   def self.env
@@ -28,6 +28,10 @@ module Calm
 
   def self.routes
     @@routes
+  end
+
+  def self.routes=(value)
+    @@routes = value
   end
 
   def self.settings
