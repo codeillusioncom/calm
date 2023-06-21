@@ -2,8 +2,11 @@ module Calm
   class Route
     getter path
     getter callback
+    alias ParamsHash = String | Int32
+    property view : Proc(Hash(String, ParamsHash), String)
 
     def initialize(@path : String, &@callback : HTTP::Server::Context -> String)
+      @view = Proc(Hash(String, String | Int32), String).new { |args| "" }
     end
   end
 
@@ -16,13 +19,16 @@ module Calm
 
     def draw
       with self yield
-      self
+      Calm.routes = self
     end
 
     macro get(route, mapping)
-      routes << Calm::Route.new({{route}}) do |context|
-        {{mapping.receiver}}.new.{{mapping.name}}
+      route = Calm::Route.new({{route}}) do |context|
+        {{mapping.receiver}}.new.{{mapping.name}}(context)
       end
+     
+      route.view = ->(context : Hash(String, String | Int32)){({{mapping.receiver}}View.new.{{mapping.name}}(context)) || "" }
+      routes << route
     end
   end
 end
@@ -32,14 +38,6 @@ module Calm
     module Handler
       class Routing
         include HTTP::Handler
-
-        def self.yield_with_context(context)
-          with context yield
-        end
-
-        macro capture_with_context(context, &block)
-          -> { Routing.yield_with_context {{context}} {{block}} }
-        end
 
         def call(context : HTTP::Server::Context)
           path_parts = Path[context.request.resource].normalize.parts
@@ -51,15 +49,24 @@ module Calm
               # TODO: JSON
               # TODO: Template
               context.response.content_type = "text/html"
-              res = ApplicationView.new.index do
-                Http::Handler::Routing.yield_with_context(context) do
-                  obj[0].callback.call context
-                end
+
+              # HomeView.new.show
+              # render_class(self.class.to_s.split("Handler")[0])
+              # ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
+
+              controller_content = obj[0].callback.call context
+
+              template_content = ApplicationView.new.index do
+                controller_content
                 # HomeView.new.show
                 # render_class(self.class.to_s.split("Handler")[0])
                 # ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
               end
-              context.response.print res
+              if 1 == 1
+                context.response.print template_content
+              else
+                context.response.print controller_content
+              end
             end
           end
         end

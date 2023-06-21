@@ -98,8 +98,8 @@ module Calm
       return nil
     end
 
-    def simple_form(model, &block)
-      @lines << "<form>"
+    def simple_form(model, action = "#", method = "post", &block)
+      @lines << "<form action=\"#{action}\" method=\"#{method}\">"
       f = Form.new(model)
 
       @current_indent += 1

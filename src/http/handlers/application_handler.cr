@@ -49,31 +49,6 @@ module Calm
         end if !boundary.nil? && !@request.body.nil?
       end
 
-      def process_dispatch(res)
-        Log.info { "Process dispatch: " }
-        puts "---"
-
-        # methods[@matcher.action.to_s]
-
-        # #persist_flash
-        # Log.info { "Access denied." }
-        # TODO: other types
-        # #@context.flash << HTTP::Server::Flash.new("danger", "Access denied! You don't have enough permission to view this page.")
-        # @response.content_type = "text/html"
-        # @response.print
-        # #persist_flash
-        # @response.redirect("/")
-        # end
-      end
-
-      def methods
-        puts "ős"
-      end
-
-      macro inherited
-        pp {{ @type.stringify }}
-      end
-
       def [](variable)
         {% for ivar in @type.instance_vars %}
         if @@STRUCT.keys.includes? {{ivar.stringify}}
@@ -95,24 +70,6 @@ module Calm
 
       private def handle_http_method_not_allowed
         Http::Response::MethodNotAllowed.new(self.class.http_method_names)
-      end
-
-      def render(view_name, locals = {} of String | Symbol => SupportedTypes)
-        # env = ::Crinja.new
-        # controller_name = self.class.to_s.underscore.split("_").first
-        # env.loader = ::Crinja::Loader::FileSystemLoader.new("src/views/#{controller_name}")
-
-        # template = env.get_template("/#{@matcher.action}.#{@format}.j2")
-
-        res = ApplicationView.new.index do
-          # HomeView.new.show
-          # render_class(self.class.to_s.split("Handler")[0])
-          # ApplicationHandler.get_class("#{self.class.to_s.split("Handler")[0]}View").new.show
-        end
-
-        @response.content_type = MIME_TYPES[@format]
-        # @response.print template.render(locals)
-        @response.print res
       end
 
       def redirect_to(location : String | URI, status : HTTP::Status = :found)
