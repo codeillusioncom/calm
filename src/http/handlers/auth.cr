@@ -5,7 +5,6 @@ module Calm
         include ::HTTP::Handler
 
         def call(context : ::HTTP::Server::Context)
-          # @request = @context.request
           request = context.request
           response = context.response
           cookies = HTTP::Cookies.from_client_headers(request.headers)
@@ -16,10 +15,10 @@ module Calm
               context.username = payload["sub"].as_s
             rescue JWT::ExpiredSignatureError
               Log.info { "Token expired #{cookies["token"]}." }
-              response.headers.add("Set-Cookie", "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT")
-              context.username = nil
-              # response.redirect "/"
+              context.sign_out
             end
+          else
+            #
           end
 
           call_next(context)

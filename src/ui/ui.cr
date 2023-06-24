@@ -81,12 +81,21 @@ module Calm
             end
             ul %|class="navbar-nav mb-2 mb-lg-0"| do
               li %|class="nav-item dropdown"| do
-                a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, "Sign in"
-
-                ul %|class="dropdown-menu dropdown-menu-end"| do
-                  li do
-                    a %|class="dropdown-item" href="/users/sign_in"|, "Sign in"
-                    a %|class="dropdown-item" href="/users/sign_up"|, "Sign up"
+                if @context.username
+                  a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, @context.username
+                  ul %|class="dropdown-menu dropdown-menu-end"| do
+                    li do
+                      a %|class="dropdown-item" href="/users/sign_in"|, "My profile..."
+                      a %|class="dropdown-item" href="/users/sign_out"|, "Sign out"
+                    end
+                  end
+                else
+                  a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, "Sign in"
+                  ul %|class="dropdown-menu dropdown-menu-end"| do
+                    li do
+                      a %|class="dropdown-item" href="/users/sign_in"|, "Sign in"
+                      a %|class="dropdown-item" href="/users/sign_up"|, "Sign up"
+                    end
                   end
                 end
               end
@@ -100,7 +109,7 @@ module Calm
 
     def simple_form(model, action = "#", method = "post", &block)
       @lines << "<form action=\"#{action}\" method=\"#{method}\">"
-      f = Form.new(model)
+      f = Form.new(@context, model)
 
       @current_indent += 1
       @indents << @current_indent
@@ -173,8 +182,13 @@ module Calm
 
     property lines : Array(String)
     property indents : Array(Int32)
+    property context : HTTP::Server::Context
 
-    def initialize(@lines = [] of String, @indents = [] of Int32, @current_indent = 0)
+    def initialize(@context, @lines = [] of String, @indents = [] of Int32, @current_indent = 0)
+    end
+
+    def lines_joined
+      @lines.join
     end
 
     def self.new
@@ -201,7 +215,7 @@ module Calm
   end
 
   class Form < Calm::UI
-    def initialize(@model : Calm::Db::Base, @lines = [] of String, @indents = [] of Int32, @current_indent = 0)
+    def initialize(@context, @model : Calm::Db::Base, @lines = [] of String, @indents = [] of Int32, @current_indent = 0)
     end
 
     def input(title : String | Symbol, id : String? = nil, label : String? = nil, placeholder : String = "", value : String? = nil, type = "text", autofocus = false)
