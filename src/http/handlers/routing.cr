@@ -18,7 +18,7 @@ module Calm
       @routes = [] of Calm::Route
     end
 
-    macro get_post(route, mapping, type)
+    macro get_post(route, mapping, type, view)
       def self.{{mapping.id.underscore.gsub(/\./, "__")}}
         {{route}}
       end
@@ -27,16 +27,22 @@ module Calm
         {{mapping.receiver}}.new.{{mapping.name}}(context)
       end
 
-      route.view = ->(context: HTTP::Server::Context, args : Hash(String, String | Int32)){({{mapping.receiver}}View.new.{{mapping.name}}(context, args)) || "" }
+      # TODO: choose view
+      {% if view %}
+        route.view = ->(context: HTTP::Server::Context, args : Hash(String, String | Int32)){({{view.receiver}}.new.{{mapping.name}}(context, args)) || "" }
+      {% else %}
+        route.view = ->(context: HTTP::Server::Context, args : Hash(String, String | Int32)){({{mapping.receiver}}View.new.{{mapping.name}}(context, args)) || "" }
+      {% end %}
+
       Calm.routes.routes << route
     end
 
-    macro get(route, mapping)
-      get_post({{route}}, {{mapping}}, "get")
+    macro get(route, mapping, view = nil)
+      get_post({{route}}, {{mapping}}, "get", {{view}})
     end
 
-    macro post(route, mapping)
-      get_post({{route}}, {{mapping}}, "post")
+    macro post(route, mapping, view = nil)
+      get_post({{route}}, {{mapping}}, "post", {{view}})
     end
   end
 end

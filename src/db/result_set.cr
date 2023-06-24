@@ -87,7 +87,7 @@ module Calm
           end
         end
 
-        return T.new.call(@query)
+        return T.new.call(command)
       end
 
       def first

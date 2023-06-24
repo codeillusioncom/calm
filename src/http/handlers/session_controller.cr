@@ -26,8 +26,12 @@ class SessionController < Calm::Controller::ApplicationController
   # end
 
   def authenticate(render)
-    username = "admin"
-    password = "adminadmin"
+    post_params = render.post_params
+    username = post_params["username"]
+    password = post_params["password"]
+
+    puts username
+    puts password
 
     user = User.all.where("username", username).where("password", password).first
     if user

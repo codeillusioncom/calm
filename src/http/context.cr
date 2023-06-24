@@ -22,10 +22,27 @@ module HTTP
         "view error"
       end
 
+      def table(model : Calm::Db::Base.class)
+        obj = Calm.routes.routes.select { |r| r.path == request.path }
+        view_obj = obj[0].view
+        args = Hash(String, String | Int32).new
+        return view_obj.call self, args
+      end
+
       def ui
         ui_obj = Calm::UI.new(self)
         with ui_obj yield
         return ui_obj.lines_joined
+      end
+
+      def post_params
+        request_body = @request.body
+
+        if request_body
+          return HTTP::Params.parse(request_body.gets_to_end)
+        else
+          return HTTP::Params.new
+        end
       end
 
       def params
@@ -36,6 +53,8 @@ module HTTP
           add_part_name_to_params(part.name, part.body.gets_to_end)
         end if !boundary.nil? && !@request.body.nil?
         @object_initialized = true
+
+        pp post_params
 
         return @object
       end

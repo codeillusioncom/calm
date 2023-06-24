@@ -94,7 +94,14 @@ module Calm
             i += 1
             "\"#{k}\" = $#{i}"
           end.join(", ")
+
           command += "#{sets} WHERE \"#{id}\" = '#{id_value}';"
+
+          Log.info { "SQL: #{command}" }
+          Log.debug { args }
+
+          db.exec command, args: args
+
           return true
         end
       end
