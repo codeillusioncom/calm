@@ -5,9 +5,11 @@ module Calm
     getter type
     alias ParamsHash = String | Int32
     property view : Proc(HTTP::Server::Context, Hash(String, ParamsHash), String)
+    property access : Proc(String?, Calm::Db::Base?, Bool)
 
     def initialize(@path : String, @type : String = "get", &@callback : HTTP::Server::Context -> String)
       @view = Proc(HTTP::Server::Context, Hash(String, String | Int32), String).new { |args| "" }
+      @access = Proc(String?, Calm::Db::Base?, Bool).new { |username, object| false }
     end
   end
 
@@ -26,6 +28,8 @@ module Calm
       route = Calm::Route.new({{route}}, {{type}}) do |context|
         {{mapping.receiver}}.new.{{mapping.name}}(context)
       end
+
+      route.access = ->(username : String?, object : Calm::Db::Base?){({{mapping.receiver}}Policy.new(username, object).{{mapping.name}}?)}
 
       # TODO: choose view
       {% if view %}
@@ -52,6 +56,9 @@ module Calm
     module Handler
       class Routing
         include HTTP::Handler
+
+        def has_right?
+        end
 
         def call(context : HTTP::Server::Context)
           path_parts = Path[context.request.resource].normalize.parts

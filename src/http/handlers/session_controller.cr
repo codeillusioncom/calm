@@ -19,19 +19,10 @@ class SessionController < Calm::Controller::ApplicationController
     render.with
   end
 
-  # def destroy
-  #   @context.username = nil
-  #   @response.headers.add("Set-Cookie", "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT")
-  #   @response.redirect("/")
-  # end
-
   def authenticate(render)
     post_params = render.post_params
     username = post_params["username"]
     password = post_params["password"]
-
-    puts username
-    puts password
 
     user = User.all.where("username", username).where("password", password).first
     if user
@@ -53,6 +44,7 @@ class SessionController < Calm::Controller::ApplicationController
       # render text: "Hello #{token}"
     else
       # render text: "Error"
+      render.flash("error", "Invalid username or password!")
     end
     "bla"
   end

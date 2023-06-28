@@ -59,8 +59,8 @@ module Calm
           end
           div %|class="collapse navbar-collapse" id="navbarSupportedContent"| do
             ul %|class="navbar-nav me-auto mb-2 mb-lg-0"| do
-              li %|class="nav-item"| do
-                items.each do |item|
+              items.each do |item|
+                li %|class="nav-item"| do
                   if item.is_a?(NamedTuple(name: String, url: Nil, items: Array(NamedTuple(name: String, url: String))))
                     li %|class="nav-item dropdown"| do
                       a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, item["name"]

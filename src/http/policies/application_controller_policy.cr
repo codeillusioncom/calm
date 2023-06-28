@@ -1,12 +1,13 @@
 module Calm
   module Handler
-    class ApplicationHandlerPolicy
+    class ApplicationControllerPolicy
       property username : String?
+      property object : Calm::Db::Base?
 
       def initialize
       end
 
-      def initialize(@username)
+      def initialize(@username, @object)
       end
 
       macro method_missing(call)
