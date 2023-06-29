@@ -24,6 +24,7 @@ module Calm
       private INSTANCE = HTTP::Server.new([
         ::HTTP::ErrorHandler.new,
         Handler::Logger.new,
+        Handler::Error.new,
         Handler::Auth.new,
         Handler::Routing.new,
         HTTP::StaticFileHandler.new("./src/static"),
