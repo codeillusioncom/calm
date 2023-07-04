@@ -19,9 +19,9 @@ module Calm
 
       # TODO: choose view
       {% if view %}
-        route.view = ->(context: HTTP::Server::Context, args : Hash(String, String | Int32)){({{view.receiver}}.new.{{mapping.name}}(context, args)) || "" }
+        route.view = ->(context: HTTP::Server::Context, args : Hash(String, Any)){({{view.receiver}}.new.{{mapping.name}}(context, args)) || "" }
       {% else %}
-        route.view = ->(context: HTTP::Server::Context, args : Hash(String, String | Int32)){({{mapping.receiver}}View.new.{{mapping.name}}(context, args)) || "" }
+        route.view = ->(context: HTTP::Server::Context, args : Hash(String, Any)){({{mapping.receiver}}View.new.{{mapping.name}}(context, args)) || "" }
       {% end %}
 
       Calm.routes.routes << route

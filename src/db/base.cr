@@ -9,8 +9,7 @@ require "./persistence"
 
 module Calm
   module Db
-    @[Crinja::Attributes]
-    class Base
+    abstract class Base
       include Crinja::Object::Auto
       include Calm::Db::BaseStore
       extend Calm::Db::PersistenceKlazz

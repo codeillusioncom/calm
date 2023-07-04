@@ -5,11 +5,11 @@ class SessionController < Calm::Controller::ApplicationController
   def sign_in(render)
     # @context.flash << HTTP::Server::Flash.new("success", "Signed in successfully!")
 
-    args = {
-      "submit_url" => "x",
-    }
+    # args = {
+    #  "submit_url" => "x",
+    # }
 
-    render.with args
+    render.with # args
   end
 
   def sign_out(render)
