@@ -2,9 +2,9 @@ abstract class Any
 end
 
 class A(T) < Any
-  property this
+  property get
 
-  def initialize(@this : T)
+  def initialize(@get : T)
   end
 end
 
