@@ -26,16 +26,6 @@ module Calm
         "view error"
       end
 
-      def table(args = Hash(String, Any).new)
-        obj = Calm.routes.routes.select { |r| r.path == request.path }
-        view_obj = obj[0].view
-        # args = Hash(String, String | Int32 | Calm::Db::ResultSet(Calm::Db::Base)).new
-        # objects(Calm::Db::ResultSet(Calm::Db::BaseStore))
-        # return view_obj.call self, args
-        # args["xxx"] = Calm::Db::ResultSet(Machine).new("xxx")
-        return view_obj.call self, args
-      end
-
       def ui
         ui_obj = Calm::UI.new(self)
         with ui_obj yield

@@ -12,10 +12,21 @@ module Calm
       )
         @project_dir = Dir.current
         @parser = OptionParser.new
+
+        initialize_locale
       end
 
       def self.register_command(command_klass : Commands::Base.class)
         @@commands << command_klass
+      end
+
+      def initialize_locale
+        puts "Initializing locale..."
+        I18n.config.loaders << I18n::Loader::YAML.new("src/config/locales")
+        I18n.config.default_locale = :en
+        I18n.init
+
+        puts I18n.t("machines.index.title")
       end
 
       def run

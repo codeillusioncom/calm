@@ -50,6 +50,36 @@ module Calm
   end
 
   module Tag
+    def table_from_models(data : Array(Calm::Db::Base), columns = Array(String).new, pagination = false, new_button = false, edit_button = false, destroy_button = false)
+      if data.size > 0
+        table %|class="table table-responsive table-hover table-striped"| do
+          tr do
+            columns.each do |column_name|
+              th t("db.#{data[0].class.name.underscore}.#{column_name}")
+            end
+          end
+          data.each do |obj|
+            tr do
+              columns.each do |column_name|
+                td obj[column_name]
+              end
+            end
+          end
+        end
+      else
+        alert(t("table_no_data"), type = "info")
+      end
+    end
+
+    def alert(str, type = "primary", closeable = false)
+      other_classes = closeable ? "alert-dismissible fade show" : ""
+
+      @lines << "<div class=\"alert alert-#{type} #{other_classes}\" role=\"alert\">"
+      @lines << str
+      @lines << "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>" if closeable
+      @lines << "</div>"
+    end
+
     def navbar(title = nil, root_url = "/", items = [] of NamedTuple(name: String, url: String), sign_in_menu = false)
       nav %|class="navbar navbar-expand-lg bg-body-tertiary"| do
         div %|class="container-fluid"| do

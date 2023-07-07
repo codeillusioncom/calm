@@ -1,6 +1,8 @@
 require "crinja"
+require "i18n"
 require "sentry"
 
+require "./i18n/i18n"
 require "./cli/**"
 require "./db/**"
 require "./http/context"
@@ -12,6 +14,7 @@ require "./http/response/*"
 require "./http/routing/**"
 require "./http/views/**"
 require "./settings/**"
+require "./support/*"
 require "./ui/**"
 
 # TODO: Write documentation for `Calm`

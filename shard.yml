@@ -9,6 +9,8 @@ dependencies:
     github: straight-shoota/crinja
   form_builder:
     github: westonganger/form_builder.cr
+  i18n:
+    github: crystal-i18n/i18n
   jwt:
     github: crystal-community/jwt
   pg:
