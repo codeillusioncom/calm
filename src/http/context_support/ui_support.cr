@@ -12,7 +12,7 @@ module Calm
   module Http
     module UISupport
       def with(args = Hash(String, Any).new)
-        obj = Calm.routes.routes.select { |r| r.path == request.path }
+        obj = Calm.routes.routes.select { |r| r.path == request.path && r.type.upcase == request.method }
         if !obj.nil? && obj.size == 1
           view_obj = obj[0].view
           unless view_obj.nil?

@@ -21,6 +21,18 @@ module Calm
         Calm::Db::Psql.create_table(self.table_name, @@STRUCT, self.id_key)
       end
 
+      def from_params(params, variables)
+        obj = self.new
+
+        puts "params itt"
+        variables.each do |var|
+          pp params
+          obj[var] = params[var]
+        end
+
+        return obj
+      end
+
       def self.create_table_if_not_exists
         self.create_table unless self.table_exists?
       end

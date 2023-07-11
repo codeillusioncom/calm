@@ -50,19 +50,23 @@ module Calm
   end
 
   module Tag
-    def table_from_models(data : Array(Calm::Db::Base), columns = Array(String).new, pagination = false, new_button = false, edit_button = false, destroy_button = false)
+    def table_from_models(data : Array(Calm::Db::Base), columns = Array(String).new, pagination = false, new_button = false, show_button = false, edit_button = false, destroy_button = false)
       if data.size > 0
         table %|class="table table-responsive table-hover table-striped"| do
           tr do
             columns.each do |column_name|
               th t("db.#{data[0].class.name.underscore}.#{column_name}")
             end
+            th "" if show_button || edit_button || destroy_button
           end
           data.each do |obj|
             tr do
               columns.each do |column_name|
                 td obj[column_name]
               end
+              td "show" if show_button
+              td "edit" if edit_button
+              td "destroy" if destroy_button
             end
           end
         end
@@ -78,6 +82,15 @@ module Calm
       @lines << str
       @lines << "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>" if closeable
       @lines << "</div>"
+    end
+
+    def flash_notifications(context)
+      puts "flash: "
+      context.load_flash_messages
+
+      context.flash.each do |f|
+        alert(f.message, type: f.type, closeable: true)
+      end
     end
 
     def navbar(title = nil, root_url = "/", items = [] of NamedTuple(name: String, url: String), sign_in_menu = false)

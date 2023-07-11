@@ -9,14 +9,15 @@ module Calm
           if path_parts.size > 2 && path_parts[1] == "public"
             call_next(context)
           else
-            obj = Calm.routes.routes.select { |r| r.path == context.request.path }
+            obj = Calm.routes.routes.select { |r| r.path == context.request.path && r.type.upcase == context.request.method }
             if !obj.nil? && obj.size == 1
               # TODO: JSON
               context.response.content_type = "text/html"
 
+              context.check_permission!
+
               controller_content = obj[0].callback.call context
 
-              # flash?
               template_content = ApplicationView.new.index(context) do
                 controller_content
               end

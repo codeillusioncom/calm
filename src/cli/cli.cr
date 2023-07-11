@@ -25,8 +25,6 @@ module Calm
         I18n.config.loaders << I18n::Loader::YAML.new("src/config/locales")
         I18n.config.default_locale = :en
         I18n.init
-
-        puts I18n.t("machines.index.title")
       end
 
       def run

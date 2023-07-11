@@ -8,11 +8,11 @@ module Calm
         @username = nil
       end
 
-      def check_permission!(object : Calm::Db::Base?)
+      def check_permission!(object : Calm::Db::Base? = nil)
         raise Calm::AccessDeniedException.new unless check_permission(object)
       end
 
-      def check_permission(object : Calm::Db::Base?)
+      def check_permission(object : Calm::Db::Base? = nil)
         route = get_route(request.path)
         if route
           route.access.call(username, object)
