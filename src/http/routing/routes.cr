@@ -6,7 +6,7 @@ module Calm
       @routes = [] of Calm::Route
     end
 
-    macro get_post(route, mapping, type, view)
+    macro get_post_delete(route, mapping, type, view)
       {% if route.includes? ":" %}
         def self.{{mapping.id.underscore.gsub(/\./, "__")}}(*args)
           path = {{route}}
@@ -44,11 +44,15 @@ module Calm
     end
 
     macro get(route, mapping, view = nil)
-      get_post({{route}}, {{mapping}}, "get", {{view}})
+      get_post_delete({{route}}, {{mapping}}, "get", {{view}})
     end
 
     macro post(route, mapping, view = nil)
-      get_post({{route}}, {{mapping}}, "post", {{view}})
+      get_post_delete({{route}}, {{mapping}}, "post", {{view}})
+    end
+
+    macro delete(route, mapping, view = nil)
+      get_post_delete({{route}}, {{mapping}}, "delete", {{view}})
     end
   end
 end

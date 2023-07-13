@@ -60,13 +60,14 @@ module Calm
             th "" if show_button || edit_button || destroy_button
           end
           data.each do |obj|
+            show_button_link = Calm::Routes.machine_controller__show(obj.id) if show_button && context
             edit_button_link = Calm::Routes.machine_controller__edit(obj.id) if edit_button && context
             tr do
               columns.each do |column_name|
                 td obj[column_name]
               end
               td do
-                a "show" if show_button
+                a %|href=#{show_button_link}|, "show" if show_button && context
                 a %|href=#{edit_button_link}|, "edit" if edit_button && context
                 a "destroy" if destroy_button
               end if show_button || edit_button || destroy_button
