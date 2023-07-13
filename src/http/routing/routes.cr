@@ -7,10 +7,26 @@ module Calm
     end
 
     macro get_post(route, mapping, type, view)
-      def self.{{mapping.id.underscore.gsub(/\./, "__")}}
-        {{route}}
-      end
+      {% if route.includes? ":" %}
+        def self.{{mapping.id.underscore.gsub(/\./, "__")}}(*args)
+          path = {{route}}
 
+          match_data = path.match(/\/(:[a-z]+)/)
+
+          if match_data
+            args.each_with_index do |arg, index|
+              path = path.gsub(match_data[index], "/#{arg}")
+            end
+          end
+
+          return path
+        end
+      {% else %}
+        def self.{{mapping.id.underscore.gsub(/\./, "__")}}
+          {{route}}
+        end
+      {% end %}
+      
       route = Calm::Route.new({{route}}, {{type}}) do |context|
         {{mapping.receiver}}.new.{{mapping.name}}(context)
       end

@@ -7,6 +7,7 @@ module Calm
     property log_level
     property port
     property project_name
+    property refresh_secret
     property secret
     property time_zone
     property x_frame_options
@@ -20,6 +21,7 @@ module Calm
       @items_on_page = 25
       @log_level = ::Log::Severity::Info
       @port = 3001
+      @refresh_secret = "ChangeMe2"
       @secret = "ChangeMe"
       @time_zone = Time::Location.load("UTC")
       @x_frame_options = "DENY"

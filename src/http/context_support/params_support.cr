@@ -1,8 +1,10 @@
 module Calm
   module Http
     module ParamsSupport
+      property path_params = Hash(String, String).new
       @object = Hash(String, String | Hash(String, String)).new
       @object_initialized = false
+      @post_params_initialized = false
 
       def post_params
         request_body = @request.body
@@ -22,8 +24,6 @@ module Calm
           add_part_name_to_params(part.name, part.body.gets_to_end)
         end if !boundary.nil? && !@request.body.nil?
         @object_initialized = true
-
-        pp post_params
 
         return @object
       end

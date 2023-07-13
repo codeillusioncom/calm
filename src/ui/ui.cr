@@ -50,7 +50,7 @@ module Calm
   end
 
   module Tag
-    def table_from_models(data : Array(Calm::Db::Base), columns = Array(String).new, pagination = false, new_button = false, show_button = false, edit_button = false, destroy_button = false)
+    def table_from_models(data : Array(Calm::Db::Base), columns = Array(String).new, pagination = false, new_button = false, show_button = nil, edit_button = nil, destroy_button = nil, context = nil)
       if data.size > 0
         table %|class="table table-responsive table-hover table-striped"| do
           tr do
@@ -60,13 +60,16 @@ module Calm
             th "" if show_button || edit_button || destroy_button
           end
           data.each do |obj|
+            edit_button_link = Calm::Routes.machine_controller__edit(obj.id) if edit_button && context
             tr do
               columns.each do |column_name|
                 td obj[column_name]
               end
-              td "show" if show_button
-              td "edit" if edit_button
-              td "destroy" if destroy_button
+              td do
+                a "show" if show_button
+                a %|href=#{edit_button_link}|, "edit" if edit_button && context
+                a "destroy" if destroy_button
+              end if show_button || edit_button || destroy_button
             end
           end
         end
@@ -158,6 +161,7 @@ module Calm
       @indents << @current_indent
 
       yield f
+
       @lines << f.lines.join
 
       @current_indent += 1

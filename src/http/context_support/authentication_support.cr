@@ -13,20 +13,16 @@ module Calm
       end
 
       def check_permission(object : Calm::Db::Base? = nil)
-        route = get_route(request.path)
+        route = Calm::Http::Handler::Routing.get_route(request.path, self)
+        pp "route:"
+        pp route
         if route
+          puts "yes"
+          pp route.access
           route.access.call(username, object)
         else
+          puts "no"
           false
-        end
-      end
-
-      private def get_route(path)
-        selected_routes = Calm.routes.routes.select { |route| route.path == path }
-        if selected_routes.size == 1
-          return selected_routes[0]
-        else
-          return nil
         end
       end
     end

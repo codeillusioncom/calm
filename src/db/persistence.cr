@@ -21,6 +21,14 @@ module Calm
         return false
       end
 
+      def from_params(params, variables)
+        variables.each do |var|
+          self[var] = params[var]
+        end
+
+        return self
+      end
+
       def persist(throw_exception_on_error = false)
         # before_validation
         res = valid?

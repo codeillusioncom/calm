@@ -24,9 +24,7 @@ module Calm
       def from_params(params, variables)
         obj = self.new
 
-        puts "params itt"
         variables.each do |var|
-          pp params
           obj[var] = params[var]
         end
 

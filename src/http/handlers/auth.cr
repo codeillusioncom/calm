@@ -1,8 +1,18 @@
 module Calm
   module Http
+    module TokenGenerator
+    end
+
     module Handler
       class Auth
         include ::HTTP::Handler
+        include TokenGenerator
+
+        def reauth_with_refresh_token
+          # refresh_token = JWT.decode(cookies["refresh_token"].value, Calm.settings.refresh_secret, JWT::Algorithm::HS256)
+
+          return true
+        end
 
         def call(context : ::HTTP::Server::Context)
           request = context.request
@@ -15,7 +25,7 @@ module Calm
               context.username = payload["sub"].as_s
             rescue JWT::ExpiredSignatureError
               Log.info { "Token expired #{cookies["token"]}." }
-              context.sign_out
+              context.sign_out unless reauth_with_refresh_token
             end
           else
             #
