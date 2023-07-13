@@ -49,6 +49,20 @@ module Calm
       end
 
       def edit(context, vars)
+        context.ui do
+          h1 t(".title")
+
+          use_var("object", T, "action", String) do
+            pp object
+            simple_form(object, action: action) do |f|
+              f.input :hostname, autofocus: true
+              f.input :ip
+              f.input :check_command
+
+              f.submit
+            end
+          end
+        end
       end
 
       def update(context, vars)
