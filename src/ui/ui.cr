@@ -62,6 +62,7 @@ module Calm
           data.each do |obj|
             show_button_link = Calm::Routes.machine_controller__show(obj.id) if show_button && context
             edit_button_link = Calm::Routes.machine_controller__edit(obj.id) if edit_button && context
+            destroy_button_link = Calm::Routes.machine_controller__destroy(obj.id) if destroy_button && context
             tr do
               columns.each do |column_name|
                 td obj[column_name]
@@ -69,7 +70,7 @@ module Calm
               td do
                 a %|href=#{show_button_link}|, "show" if show_button && context
                 a %|href=#{edit_button_link}|, "edit" if edit_button && context
-                a "destroy" if destroy_button
+                a %|href=# hx-delete=#{destroy_button_link} hx-confirm="#{t("are_you_sure")}"|, "destroy" if destroy_button && context
               end if show_button || edit_button || destroy_button
             end
           end

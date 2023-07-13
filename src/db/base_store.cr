@@ -4,6 +4,7 @@ module Calm
   module Db
     module BaseStore
       alias Types = (String.class | Int32.class | Int64.class | Float32.class | Float64.class | Bool.class | Nil.class)
+      alias ObjTypes = (Array(Symbol) | String | Int32 | Int64 | Float32 | Float64 | Bool | Nil)
 
       def self.id_key
         "id"

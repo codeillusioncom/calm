@@ -5,8 +5,8 @@ module Calm
         context.ui do
           h1 t(".title")
 
-          use_var("objects", Array(T), "columns", Array(String), "show_button", Bool, "edit_button", Bool) do
-            table_from_models objects, columns: columns, show_button: show_button, edit_button: edit_button, context: context
+          use_var("objects", Array(T), "columns", Array(String), "show_button", Bool, "edit_button", Bool, "destroy_button", Bool) do
+            table_from_models objects, columns: columns, show_button: show_button, edit_button: edit_button, destroy_button: destroy_button, context: context
 
             a %|class="btn btn-primary" href="/#{T.to_s.underscore}s/add"|, "Create new"
           end

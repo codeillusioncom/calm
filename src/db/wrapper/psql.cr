@@ -109,10 +109,15 @@ module Calm
       def self.delete(table_name, id, id_value)
         DB.open Calm.settings.database_url do |db|
           command = "delete from \"#{table_name}\" "
-          command += "where #{id}=?"
-          args = [] of Calm::Db::BaseStore::Types
-          args << id_value
-          db.exec command, args: args
+          command += "where #{id}=$1"
+          args = [] of Calm::Db::BaseStore::ObjTypes
+          if id_value
+            args << id_value
+            Log.info { "SQL: #{command}" }
+            Log.debug { args }
+
+            db.exec command, args: args
+          end
         end
       end
 
