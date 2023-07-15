@@ -8,7 +8,7 @@ module Calm
           begin
             call_next(context)
           rescue ex : Calm::AccessDeniedException
-            context.flash("danger", "Access Denied!")
+            context.flash("danger", t("access_denied"))
             context.response.redirect("/")
           end
         end

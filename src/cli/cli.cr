@@ -22,8 +22,9 @@ module Calm
 
       def initialize_locale
         puts "Initializing locale..."
+        I18n.config.loaders << I18n::Loader::YAML.new("lib/calm/src/config/locales")
         I18n.config.loaders << I18n::Loader::YAML.new("src/config/locales")
-        I18n.config.default_locale = :en
+        I18n.config.default_locale = Calm.settings.default_locale
         I18n.init
       end
 

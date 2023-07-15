@@ -14,9 +14,9 @@ class SessionController < Calm::Controller::ApplicationController
 
   def sign_out(render)
     render.sign_out
+    render.flash("info", t("session_controller.signed_out"))
 
-    render.response.redirect("/")
-    render.with
+    render.redirect_to Calm::Routes.home_controller__show
   end
 
   def authenticate(render)
@@ -41,17 +41,20 @@ class SessionController < Calm::Controller::ApplicationController
       refresh_payload = {"exp" => refresh_exp, "uid" => uid}
       refresh_token = JWT.encode(refresh_payload, Calm.settings.refresh_secret, JWT::Algorithm::HS256)
       Log.info { "Token created" }
-      render.flash("success", "Signed in successfully!")
+      render.flash("success", t("session_controller.signed_in_successfully"))
       render.response.headers.add("Set-Cookie", "token=#{token}; path=/;")
       render.response.headers.add("Set-Cookie", "refresh_token=#{refresh_token}; path=/; HttpOnly;")
-      render.response.headers["HX-Redirect"] = "/"
+      # render.response.headers["HX-Redirect"] = "/"
 
       render.username = sub
       # render text: "Hello #{token}"
+      render.redirect_to Calm::Routes.home_controller__show
     else
       # render text: "Error"
-      render.flash("danger", "Invalid username or password!")
+      render.flash("danger", t("session_controller.invalid_username_or_password"))
+      render.redirect_to Calm::Routes.session_controller__sign_in
     end
-    "bla"
+
+    return ""
   end
 end

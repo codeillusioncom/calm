@@ -25,8 +25,6 @@ module Calm
             end
           end
 
-          puts res
-
           return true
         end
 

@@ -1,3 +1,8 @@
+class NoView
+  def none
+  end
+end
+
 module Calm
   class Routes
     getter routes
@@ -6,7 +11,7 @@ module Calm
       @routes = [] of Calm::Route
     end
 
-    macro get_post_delete(route, mapping, type, view)
+    macro get_post_delete(route, mapping, type, view = DefaultView)
       {% if route.includes? ":" %}
         def self.{{mapping.id.underscore.gsub(/\./, "__")}}(*args)
           path = {{route}}
@@ -36,8 +41,6 @@ module Calm
       # TODO: choose view
       {% if view %}
         route.view = ->(context: HTTP::Server::Context, args : Hash(String, Any)){({{view.receiver}}.new.{{mapping.name}}(context, args)) || "" }
-      {% else %}
-        route.view = ->(context: HTTP::Server::Context, args : Hash(String, Any)){({{mapping.receiver}}View.new.{{mapping.name}}(context, args)) || "" }
       {% end %}
 
       Calm.routes.routes << route

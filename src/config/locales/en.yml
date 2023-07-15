@@ -1,4 +1,40 @@
 en:
-  machines:
-    index:
-      titlee: "Gépek"
+  i18n:
+    date:
+      abbr_day_names: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+      abbr_month_names: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+      day_names: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+      month_names: [January, February, March, April, May, June,
+                    July, August, September, October, November, December]
+      formats:
+        default: "%Y-%m-%d"
+        long: "%B %d, %Y"
+        short: "%b %d"
+    time:
+      am: am
+      formats:
+        default: "%a, %d %b %Y %H:%M:%S %z"
+        long: "%B %d, %Y %H:%M"
+        short: "%d %b %H:%M"
+      pm: pm
+    number:
+      formats:
+        default:
+          delimiter: ","
+          separator: "."
+          decimal_places: null
+          group: 3
+          only_significant: false
+  navbar:
+    session:
+      my_profile: "My profile..."
+      sign_out: "Sign out"
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+  session_controller:
+    signed_in_successfully: "Signed in successfully."
+    invalid_username_or_password: "Invalid username or password."
+    signed_out: "Sikeres kijelentkezés!"
+  cli:
+    usage: "Usage: calm [command]"
+    registering: "Registering %{command_klass}"

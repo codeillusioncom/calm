@@ -3,6 +3,7 @@ require "i18n"
 require "sentry"
 
 require "./i18n/i18n"
+require "./config/locales/*"
 require "./cli/**"
 require "./db/**"
 require "./http/context"

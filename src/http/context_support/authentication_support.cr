@@ -14,14 +14,9 @@ module Calm
 
       def check_permission(object : Calm::Db::Base? = nil)
         route = Calm::Http::Handler::Routing.get_route(request.path, self)
-        pp "route:"
-        pp route
         if route
-          puts "yes"
-          pp route.access
           route.access.call(username, object)
         else
-          puts "no"
           false
         end
       end

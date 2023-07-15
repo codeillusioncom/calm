@@ -2,6 +2,7 @@ module Calm
   class Settings
     property database_url
     property debug
+    property default_locale
     property host
     property items_on_page : Int32
     property log_level
@@ -17,6 +18,7 @@ module Calm
 
       @database_url = "postgres://admin:adminadmin@localhost:5432/#{@project_name}_#{Calm.env}"
       @debug = false
+      @default_locale = "hu"
       @host = "127.0.0.1"
       @items_on_page = 25
       @log_level = ::Log::Severity::Info

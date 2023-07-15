@@ -27,6 +27,12 @@ module Calm
         "view error"
       end
 
+      def redirect_to(path)
+        response.redirect(path)
+
+        return ""
+      end
+
       def ui
         ui_obj = Calm::UI.new(self)
         with ui_obj yield

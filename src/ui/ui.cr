@@ -68,9 +68,15 @@ module Calm
                 td obj[column_name]
               end
               td do
-                a %|href=#{show_button_link}|, "show" if show_button && context
-                a %|href=#{edit_button_link}|, "edit" if edit_button && context
-                a %|href=# hx-delete=#{destroy_button_link} hx-confirm="#{t("are_you_sure")}"|, "destroy" if destroy_button && context
+                a %|href=#{show_button_link} class="btn btn-primary me-1" title=#{t("show")}| do
+                  icon("file")
+                end if show_button && context
+                a %|href=#{edit_button_link} class="btn btn-primary me-1" title=#{t("edit")}| do
+                  icon("pencil")
+                end if edit_button && context
+                a %|href="#" hx-target="#main" hx-delete="#{destroy_button_link}" title=#{t("destroy")} hx-confirm="#{t("are_you_sure")}" class="btn btn-danger"| do
+                  icon("trash")
+                end if destroy_button && context
               end if show_button || edit_button || destroy_button
             end
           end
@@ -90,7 +96,6 @@ module Calm
     end
 
     def flash_notifications(context)
-      puts "flash: "
       context.load_flash_messages
 
       context.flash.each do |f|
@@ -101,7 +106,7 @@ module Calm
     def navbar(title = nil, root_url = "/", items = [] of NamedTuple(name: String, url: String), sign_in_menu = false)
       nav %|class="navbar navbar-expand-lg bg-body-tertiary"| do
         div %|class="container-fluid"| do
-          a %|class="navbar-brand" href="#"|, "Navbar"
+          a %|class="navbar-brand" href="#"|, title
           button %|class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"| do
             span %|class="navbar-toggler-icon"|, ""
           end
@@ -133,16 +138,16 @@ module Calm
                   a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, @context.username
                   ul %|class="dropdown-menu dropdown-menu-end"| do
                     li do
-                      a %|class="dropdown-item" href="/users/sign_in"|, "My profile..."
-                      a %|class="dropdown-item" href="/users/sign_out"|, "Sign out"
+                      a %|class="dropdown-item" href="/users/sign_in"|, t("navigation.session.my_profile")
+                      a %|class="dropdown-item" href="/users/sign_out"|, t("navigation.session.sign_out")
                     end
                   end
                 else
-                  a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, "Sign in"
+                  a %|class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"|, t("navigation.session.sign_in")
                   ul %|class="dropdown-menu dropdown-menu-end"| do
                     li do
-                      a %|class="dropdown-item" href="/users/sign_in"|, "Sign in"
-                      a %|class="dropdown-item" href="/users/sign_up"|, "Sign up"
+                      a %|class="dropdown-item" href="/users/sign_in"|, t("navigation.session.sign_in")
+                      a %|class="dropdown-item" href="/users/sign_up"|, t("navigation.session.sign_up")
                     end
                   end
                 end
@@ -202,6 +207,12 @@ module Calm
 
     def strip_content(content)
       ::HTML.escape(content.to_s)
+    end
+
+    def icon(name)
+      @lines << "<i class=\"bi-#{name}\"></i>"
+
+      return nil
     end
   end
 

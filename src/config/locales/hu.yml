@@ -22,9 +22,19 @@ hu:
         default:
           delimiter: " "
           separator: ","
-         decimal_places: null
+          decimal_places: null
           group: 3
           only_significant: false
+  navigation:
+    session:
+      my_profile: "Saját adataim..."
+      sign_out: "Kijelentkezés"
+      sign_in: "Bejelentkezés"
+      sign_up: "Regisztráció"
+  session_controller:
+    signed_in_successfully: "Sikeres bejelentkezés!"
+    signed_out: "Sikeres kijelentkezés!"
+    invalid_username_or_password: "Érvénytelen felhasználónév vagy jelszó!"
   cli:
     usage: "Használat: calm [parancs]"
     registering: "Registering %{command_klass}"

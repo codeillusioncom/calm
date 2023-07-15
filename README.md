@@ -1,6 +1,11 @@
 # calm
 
-TODO: Write a description here
+Calm is a web framework where
+
+* your website compiles into one executable
+* are no template files, no html, no JavaScript
+
+Calm uses the crystal programming language.
 
 ## Installation
 

@@ -34,6 +34,8 @@ module Calm
       def order(column : String, order = "ASC")
         @order_columns << Order.new(column, order)
 
+        pp @order_columns
+
         return self
       end
 
@@ -73,7 +75,7 @@ module Calm
             command += " ORDER BY #{T.id_key} ASC LIMIT #{@page * @items_on_page - @items_on_page} )"
             command += " ORDER BY #{T.id_key} ASC LIMIT #{@items_on_page}"
           end
-
+        else
           reversed_order_columns = @order_columns.reverse
 
           if @pagination
@@ -86,6 +88,8 @@ module Calm
             command += " ORDER BY #{column.name} #{column.order} "
           end
         end
+
+        Log.info { "SQL: #{command}" }
 
         return T.new.call(command)
       end
