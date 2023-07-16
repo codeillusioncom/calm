@@ -35,6 +35,7 @@ hu:
     signed_in_successfully: "Sikeres bejelentkezés!"
     signed_out: "Sikeres kijelentkezés!"
     invalid_username_or_password: "Érvénytelen felhasználónév vagy jelszó!"
+    token_expired: "Lejárt munkamenet, kérjük jelentkezzen be újra!"
   cli:
     usage: "Használat: calm [parancs]"
     registering: "Registering %{command_klass}"

@@ -1,5 +1,7 @@
 module Calm
   class Settings
+    property auth_token_expiration
+    property auth_token_secret
     property database_url
     property debug
     property default_locale
@@ -8,14 +10,16 @@ module Calm
     property log_level
     property port
     property project_name
-    property refresh_secret
-    property secret
+    property refresh_token_expiration
+    property refresh_token_secret
     property time_zone
     property x_frame_options
 
     def initialize
       @project_name = Dir.current.split("/").last
 
+      @auth_token_expiration = 2
+      @auth_token_secret = "ChangeMe"
       @database_url = "postgres://admin:adminadmin@localhost:5432/#{@project_name}_#{Calm.env}"
       @debug = false
       @default_locale = "hu"
@@ -23,8 +27,8 @@ module Calm
       @items_on_page = 25
       @log_level = ::Log::Severity::Info
       @port = 3001
-      @refresh_secret = "ChangeMe2"
-      @secret = "ChangeMe"
+      @refresh_token_expiration = 5
+      @refresh_token_secret = "ChangeMe2"
       @time_zone = Time::Location.load("UTC")
       @x_frame_options = "DENY"
     end

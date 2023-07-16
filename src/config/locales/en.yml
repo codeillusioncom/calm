@@ -34,7 +34,8 @@ en:
   session_controller:
     signed_in_successfully: "Signed in successfully."
     invalid_username_or_password: "Invalid username or password."
-    signed_out: "Sikeres kijelentkezés!"
+    signed_out: "Signed out successfully."
+    token_expired: "Token expired, please sign in again."
   cli:
     usage: "Usage: calm [command]"
     registering: "Registering %{command_klass}"
