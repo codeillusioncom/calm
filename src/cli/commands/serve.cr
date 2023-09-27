@@ -25,7 +25,7 @@ module Calm
                 run_args: ["src/homeweb.cr", "server"],
                 build_command: "crystal",
                 build_args: ["build", "../calm/src/calm.cr"],
-                files: ["./src/**/*.cr", "./src/**/*.ecr"],
+                files: ["./src/**/*.cr"],
                 should_build: false,
               )
               sentry.run
@@ -38,6 +38,10 @@ module Calm
 
         def run
           Http::Server.start
+
+          while true
+            sleep 1
+          end
         end
       end
     end

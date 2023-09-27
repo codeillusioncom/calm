@@ -11,14 +11,26 @@ module Calm
 
         Log.info { "Starting server..." }
 
-        INSTANCE.bind_tcp address
-        INSTANCE.listen
+        INSTANCE.bind_tcp address, reuse_port: true
+
+        Signal::HUP.trap do
+          puts "Will stop in moment! ({active_requests} active requests)"
+          sleep 1.seconds
+          INSTANCE.close
+        end
+
+        spawn INSTANCE.listen
+        puts "listen után..."
       end
 
       def self.stop
         Log.info { "Stopping server..." }
 
-        INSTANCE.close
+        while !INSTANCE.closed?
+          Log.info { "closing server..." }
+          sleep 1.seconds
+          INSTANCE.close
+        end
       end
 
       private INSTANCE = HTTP::Server.new([

@@ -45,6 +45,7 @@ module Calm
   def run
     Log.info { "Starting." }
     Signal::INT.trap do
+      puts "terminating..."
       Signal::INT.reset
       Log.info { "Exited by user." }
 
