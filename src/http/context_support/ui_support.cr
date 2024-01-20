@@ -36,6 +36,7 @@ module Calm
       def ui
         ui_obj = Calm::UI.new(self)
         with ui_obj yield
+
         return ui_obj.lines_joined
       end
     end

@@ -43,14 +43,15 @@ module Calm
 
               controller_content = obj[0].callback.call context
 
-              template_content = ApplicationView.new.index(context) do
-                controller_content
-              end
+              template_content = ApplicationView.new.index(context, &-> : String { controller_content })
+
               if context.request.headers.has_key?("HX-Request")
                 context.response.print controller_content unless context.response.closed?
               else
                 context.response.print template_content unless context.response.closed?
               end
+              # TODO: if dev env
+              context.response.headers.add("Cache-Control", "no-cache, max-age=0, must-revalidate")
             end
           end
         end

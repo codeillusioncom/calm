@@ -20,7 +20,7 @@ module Calm
         end
 
         spawn INSTANCE.listen
-        puts "listen után..."
+        Log.info { "Listening on #{INSTANCE.addresses.map { |a| a.to_s }.join(", ")}..." }
       end
 
       def self.stop

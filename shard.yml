@@ -16,12 +16,11 @@ dependencies:
   pg:
     github: will/crystal-pg
   sentry:
-    #github: sawmueleaton/sentry
-    #branch: master
-    path: ../../github.com/sentry
+    github: samueleaton/sentry
+    branch: master
   water:
     github: shootingfly/water
 
-crystal: 1.9.2
+crystal: 1.10.1
 
 license: MIT

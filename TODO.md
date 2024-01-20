@@ -3,3 +3,4 @@
 * navbar active
 * navbar permissions
 * SQL join
+* settings does not work

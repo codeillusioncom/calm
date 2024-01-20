@@ -1,0 +1,4 @@
+Name: libfswatch
+Description:
+Version:
+Libs: -L/usr/lib/x86_64-linux-gnu/libfswatch -lfswatch

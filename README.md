@@ -1,44 +1,45 @@
-# calm
 
-Calm is a web framework where
+# calm 0.1.0
 
-* your website compiles into one executable
-* are no template files, no html, no JavaScript
+Calm is an easy to use web framework written in [crystal](https://crystal-lang.org).
 
-Calm uses the crystal programming language.
+## installing crystal
 
-## Installation
+see [installing crystal](https://crystal-lang.org/install) for details.
 
-1. Add the dependency to your `shard.yml`:
+## creating a new project
 
-   ```yaml
-   dependencies:
-     calm:
-       github: your-github-user/calm
-   ```
-
-2. Run `shards install`
-
-## Usage
-
-```crystal
-require "calm"
+```
+$ crystal init app blog
+    create  /blog/.gitignore
+    create  /blog/.editorconfig
+    create  /blog/LICENSE
+    create  /blog/README.md
+    create  /blog/shard.yml
+    create  /blog/src/blog.cr
+    create  /blog/spec/spec_helper.cr
+    create  /blog/spec/blog_spec.cr
+Initialized empty Git repository in /blog/.git/
 ```
 
-TODO: Write usage instructions here
+change directory `cd blog`
 
-## Development
+edit `shard.yml` and add `calm` to it as a dependency:
 
-TODO: Write development instructions here
+```
+dependencies:
+  calm:
+    path: "???????????????"
+    version: 0.1.0
+```
 
-## Contributing
+then run `shards install` to download dependencies.
 
-1. Fork it (<https://github.com/your-github-user/calm/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Initialize your application with `crystal run lib/calm/src/init.cr`
 
-## Contributors
+Run migrations with `crystal run src/blog.cr -- db migrate`
 
-- [codemaker](https://github.com/your-github-user) - creator and maintainer
+## running the application
+
+Inside your project folder run `crystal run src/blog.cr`
+
