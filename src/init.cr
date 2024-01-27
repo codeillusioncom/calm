@@ -1,3 +1,4 @@
+require "ecr"
 require "file_utils"
 
 module Calm
@@ -8,7 +9,7 @@ module Calm
       "require \"./config/*\"",
       "require \"./migrations/*\"",
       "require \"./models/*\"",
-      "require \"./handlers/*\"",
+      "require \"./controllers/*\"",
       "require \"./policies/*\"",
       "require \"./views/**\"",
       "",
@@ -16,7 +17,7 @@ module Calm
 
     PROJECT_STRUCTURE = [
       "src/config/locales",
-      "src/handlers",
+      "src/controllers",
       "src/migrations",
       "src/models",
       "src/policies",
@@ -31,6 +32,7 @@ module Calm
       copy_application_view
       copy_config_file
       copy_routes_file
+      copy_en_locale
 
       puts "...project initialization done."
     end
@@ -73,15 +75,20 @@ module Calm
     end
 
     private def copy_config_file
-      original_file_path = Path.new("./lib/calm/src/templates/settings.cr")
-      new_file_path = Path.new("./src/config/settings.cr")
-
-      FileUtils.cp(original_file_path, new_file_path) unless File.exists?(new_file_path)
+      project_name = get_project_name
+      File.write("./src/config/settings.cr", ECR.render("./lib/calm/src/templates/settings_template.ecr"))
     end
 
     private def copy_routes_file
       original_file_path = Path.new("./lib/calm/src/templates/routes.cr")
       new_file_path = Path.new("./src/config/routes.cr")
+
+      FileUtils.cp(original_file_path, new_file_path) unless File.exists?(new_file_path)
+    end
+
+    private def copy_en_locale
+      original_file_path = Path.new("./lib/calm/src/templates/en.yml")
+      new_file_path = Path.new("./src/config/locales/en.yml")
 
       FileUtils.cp(original_file_path, new_file_path) unless File.exists?(new_file_path)
     end

@@ -10,6 +10,7 @@ module Calm
       end
 
       def table_name
+        pp self.name.downcase
         self.name.downcase
       end
 

@@ -3,4 +3,7 @@
 * navbar active
 * navbar permissions
 * SQL join
-* settings does not work
+
+* generate controller post+policy index /posts
+* generate controller view index /posts # / show / edit / delete / update / create
+* 

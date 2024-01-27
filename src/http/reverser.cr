@@ -23,13 +23,13 @@ module Calm
         params.each do |key, value|
           param_name = key.to_s
 
-          # A parameter that is not present in the set of route parameter handler means that the lookup is not
+          # A parameter that is not present in the set of route parameter controller means that the lookup is not
           # successful.
           return if !@parameters.has_key?(param_name)
           dumped_value = @parameters[param_name].dumps(value)
 
           # If one of the parameter dumps result is nil, this means that the lookup is not successful because one of the
-          # parameter handlers received a value it could not handle.
+          # parameter controllers received a value it could not handle.
           return if dumped_value.nil?
 
           url_params[param_name] = dumped_value

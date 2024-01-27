@@ -1,0 +1,9 @@
+  def index(render)
+    render.check_permission!
+
+    args = {} of String => Any
+
+    args["objects"] = A(Array(Post)).new(Post.all.order("id", "ASC").call)
+
+    render.with args
+  end

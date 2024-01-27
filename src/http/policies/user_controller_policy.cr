@@ -1,4 +1,4 @@
-class UserControllerPolicy < Calm::Handler::ApplicationControllerPolicy
+class UserControllerPolicy < Calm::Controller::ApplicationControllerPolicy
   def sign_in?
     !@username
   end

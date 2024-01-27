@@ -1,5 +1,5 @@
 module Calm
-  module Handler
+  module Controller
     class ApplicationControllerPolicy
       property username : String?
       property object : Calm::Db::Base?

@@ -1,0 +1,13 @@
+  def show(render)
+    render.check_permission!
+
+    args = {} of String => Any
+
+    post = Post.all.where("id", render.path_params[":id"]).first
+    if post
+      args["columns"] = A(Array(String)).new(["id", "title", content"])
+      args["object"] = A(Post).new(post)
+    end
+
+    render.with args
+  end

@@ -1,0 +1,9 @@
+  def create(render)
+    post = Post.from_params(render.post_params, ["title", "content"])
+
+    render.check_permission!(post)
+
+    post.persist
+
+    render.redirect_to Calm::Routes.post_controller__index
+  end

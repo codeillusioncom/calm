@@ -1,0 +1,14 @@
+  def destroy(render)
+    post_params = render.post_params
+
+    id = render.path_params[":id"].to_i32
+    unless id.nil?
+      post = Post.all.where("id", id).first
+      if post
+        render.check_permission!(post)
+        post.destroy
+      end
+    end
+
+    render.redirect_to Calm::Routes.post_controller__index
+  end

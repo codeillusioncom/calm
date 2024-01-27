@@ -1,0 +1,17 @@
+  def update(render)
+    render.check_permission!
+
+    post_params = render.post_params
+
+    id = render.path_params[":id"].to_i32
+    unless id.nil?
+      post = Machine.all.where("id", id).first
+      if post
+        post = post.from_params(post_params, ["title", "content"])
+        render.check_permission!(post)
+        post.persist
+      end
+    end
+
+    render.redirect_to Calm::Routes.post_controller__index
+  end

@@ -1,0 +1,17 @@
+  def edit(render)
+    render.check_permission!
+
+    params = render.params
+    post_params = render.post_params
+
+    post = Post.all.where("id", render.path_params[":id"]).first
+
+    args = {} of String => Any
+
+    args["action"] = A(String).new(Calm::Routes.post_controller__update(post.id)) if post
+    if post
+      args["object"] = A(Post).new(post)
+    end
+
+    render.with args
+  end
