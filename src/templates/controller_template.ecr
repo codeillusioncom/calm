@@ -1,7 +1,3 @@
 class <%= controller_name_capitalized %>Controller < Calm::Controller::ApplicationController
-  def show(render)
-    args = {} of String => Any
-
-    render.with args
-  end
+  <%= action_content %>
 end

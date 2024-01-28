@@ -14,8 +14,8 @@ module Calm
       def with(args = Hash(String, Any).new)
         # TODO: sok helyen van ez
         obj = Calm.routes.routes.select { |r| Calm::Http::Handler::Routing.route_matches(r.path, self) && r.type.upcase == request.method }
-        if !obj.nil? && obj.size == 1
-          view_obj = obj[0].view
+        if !obj.nil? && obj.size >= 1
+          view_obj = obj.last.view
           unless view_obj.nil?
             # args_converted = Hash(String, String | Int32 | Calm::Db::ResultSet(Calm::Db::Base)).new
             # args.each do |key, value|

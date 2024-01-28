@@ -106,12 +106,12 @@ Inside your project folder run `crystal run src/blog.cr`
 
 ## generators
 
-generators can be used from the project folder as `crystal run lib/calm/src/generate.cr -- [type] [name]`
+generators can be used from the project folder as `crystal run lib/calm/src/generate.cr -- [type] [name] [action]`
 With generators a files are generated to start to work from.
 
 ### controller type
 
-`crystal run lib/calm/src/generate.cr -- controller post`
+`crystal run lib/calm/src/generate.cr -- controller post show`
 
 this creates a handler at `src/handlers/post_controller.cr` with the content:
 
@@ -125,7 +125,22 @@ class PostController < Calm::Controller::ApplicationController
 end
 ```
 
-and creates a view at `src/views/post/post_controller_view.cr` with the content:
+You can use `index`, `show`, `add`, `create`, `edit`, `update`, `destroy` as the action name.
+
+Without the action it generates a controller file without any actions.
+ 
+`crystal run lib/calm/src/generate.cr -- controller post`
+
+```
+class PostController < Calm::Controller::ApplicationController
+end
+```
+
+### view type
+
+`crystal run lib/calm/src/generate.cr -- view post show`
+
+this creates a view at `src/views/post/post_controller_view.cr` with the content:
 
 ```
 class PostControllerView < Calm::Http::BaseView
@@ -144,6 +159,23 @@ class PostControllerView < Calm::Http::BaseView
   end
 end
 ```
+
+You can use `index`, `show`, `add`, `create`, `edit`, `update`, `destroy` as the action name.
+
+#### index action
+
+
+
+Without the action it generates a controller file without any actions.
+ 
+`crystal run lib/calm/src/generate.cr -- controller post`
+
+```
+class PostController < Calm::Controller::ApplicationController
+end
+```
+
+### policy type
 
 and creates a policy at `src/views/post/post_controller_view.cr` with the content:
 

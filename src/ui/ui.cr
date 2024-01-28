@@ -75,8 +75,6 @@ module Calm
     end
 
     def render(view : Calm::BasicView.class)
-      pp @lines.size
-      pp @indents.size
       @lines << view.new(@context).render
 
       return nil
@@ -107,5 +105,12 @@ module Calm
     def_simple_tag("hr")
     def_tag("script")
     def_tag("div")
+    def_tag("form")
+
+    def simple_form(obj, action = "post", &block)
+      @lines << "sss"
+
+      return nil
+    end
   end
 end

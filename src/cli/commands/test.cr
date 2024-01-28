@@ -9,7 +9,6 @@ module Calm
         def setup
           @parser.on("test", "Start tests") do
             process = Process.new("crystal", ["spec"], output: Process::Redirect::Pipe)
-            pp process.output.gets_to_end
             process.wait.success?
 
             exit

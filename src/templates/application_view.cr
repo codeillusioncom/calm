@@ -11,6 +11,30 @@ class NotificationsView < Calm::BasicView
   end
 end
 
+class SimpleForm < Calm::BasicView
+  def initialize(@model, @action = "#", @method = "post", &block)
+  end
+
+  def render
+    "xxx"
+    # @lines << "<form action=\"#{action}\" method=\"#{method}\">"
+    # f = form.new(@context, model)
+
+    # @current_indent += 1
+    # @indents << @current_indent
+
+    # yield f
+
+    # @lines << f.lines.join
+
+    # @current_indent += 1
+    # @indents << @current_indent
+
+    # @lines << "</form>"
+    # @indents << @current_indent
+  end.join("\n")
+end
+
 class ApplicationView
   def index(context, &block)
     context.ui do

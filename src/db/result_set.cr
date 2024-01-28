@@ -34,8 +34,6 @@ module Calm
       def order(column : String, order = "ASC")
         @order_columns << Order.new(column, order)
 
-        pp @order_columns
-
         return self
       end
 

@@ -1,0 +1,9 @@
+  def add(render)
+    render.check_permission!
+
+    args = {} of String => Any
+
+    args["action"] = A(String).new(Calm::Routes.machine_controller__create)
+
+    render.with args
+  end

@@ -5,7 +5,7 @@
 
     post = Post.all.where("id", render.path_params[":id"]).first
     if post
-      args["columns"] = A(Array(String)).new(["id", "title", content"])
+      args["columns"] = A(Array(String)).new(["id", "title", "content"])
       args["object"] = A(Post).new(post)
     end
 

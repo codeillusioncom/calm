@@ -1,15 +1,3 @@
 class <%= controller_name_capitalized %>ControllerView < Calm::Http::BaseView
-  def show(context, vars)
-    context.ui do
-      h1 { t(".title") }
-
-      div(id: "test") do
-        "It works!"
-      end
-
-      a(href: "#", "hx-get": Calm::Routes.<%= controller_name %>_controller__show, "hx-target": "#test", "hx-push-url": "true") do
-        "Test link"
-      end
-    end
-  end
+  <%= action_content %>
 end

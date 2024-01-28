@@ -6,16 +6,23 @@ module Calm
     def initialize
       puts ""
       if ARGV.size > 0
-        if ARGV[0] == "controller" && ARGV.size == 2
+        if ARGV[0] == "controller" && (ARGV.size == 2 || ARGV.size == 3)
           return generate_controller
+        elsif ARGV[0] == "policy" && (ARGV.size == 2 || ARGV.size == 3)
+          return generate_policy
+        elsif ARGV[0] == "view" && ARGV.size == 2 || ARGV.size == 3
+          return generate_view
         elsif ARGV[0] == "model" && ARGV.size == 2
           return generate_model
         elsif ARGV[0] == "migration" && ARGV.size == 2
           return generate_migration
         end
       end
-      puts "Usage: crystal run lib/calm/src/generate.cr -- controller [name]"
+      puts "Usage: crystal run lib/calm/src/generate.cr -- controller [name] [action]"
+      puts "       crystal run lib/calm/src/generate.cr -- policy [name] [action]"
+      puts "       crystal run lib/calm/src/generate.cr -- view [name]"
       puts "       crystal run lib/calm/src/generate.cr -- model [name]"
+      puts "       crystal run lib/calm/src/generate.cr -- migration [name]"
       puts ""
 
       return -1
@@ -23,34 +30,104 @@ module Calm
 
     private def generate_controller
       controller_name = ARGV[1]
-      # view
-      FileUtils.mkdir_p("./src/views/#{controller_name}")
-      controller_path = Path.new("./src/views/#{controller_name}/#{controller_name}_controller_view.cr")
-      controller_name_capitalized = controller_name.capitalize
+      controller_name_capitalized = ARGV[1].camelcase
+      action_content = ""
 
-      File.write("./src/views/#{controller_name}/#{controller_name}_controller_view.cr", ECR.render("./lib/calm/src/templates/controller_view_template.ecr"))
+      if ARGV.size == 3
+        action_name = ARGV[2]
 
-      # controller
-      File.write("./src/controllers/#{controller_name}_controller.cr", ECR.render("./lib/calm/src/templates/controller_template.ecr"))
+        action_content = ECR.render("./lib/calm/src/templates/controller/index_partial.ecr") if action_name == "index"
+        action_content = ECR.render("./lib/calm/src/templates/controller/show_partial.ecr") if action_name == "show"
+        action_content = ECR.render("./lib/calm/src/templates/controller/add_partial.ecr") if action_name == "add"
+        action_content = ECR.render("./lib/calm/src/templates/controller/create_partial.ecr") if action_name == "create"
+        action_content = ECR.render("./lib/calm/src/templates/controller/edit_partial.ecr") if action_name == "edit"
+        action_content = ECR.render("./lib/calm/src/templates/controller/update_partial.ecr") if action_name == "update"
+        action_content = ECR.render("./lib/calm/src/templates/controller/destroy_partial.ecr") if action_name == "destroy"
+      end
 
-      # policy
-      File.write("./src/policies/#{controller_name}_controller_policy.cr", ECR.render("./lib/calm/src/templates/controller_policy.ecr"))
+      if File.exists?("./src/controllers/#{controller_name}_controller.cr")
+        return if ARGV.size == 2
 
-      # route
-      old_routes_content = File.read_lines("./src/config/routes.cr")
-      route_line = "    get \"/#{controller_name}\", #{controller_name.capitalize}Controller.show, #{controller_name.capitalize}ControllerView.show"
-
-      unless old_routes_content.includes?(route_line)
-        new_routes_content = [] of String
-
-        old_routes_content.each_with_index do |line, index|
-          new_routes_content << line unless index > old_routes_content.size - 3
+        original_file_content = File.read_lines("./src/controllers/#{controller_name}_controller.cr")
+        new_file_content = [] of String
+        original_file_content.each_with_index do |line, index|
+          new_file_content << line
+          if index == 0
+            new_file_content << action_content
+            new_file_content << ""
+          end
         end
-        new_routes_content << route_line
-        new_routes_content << "  end"
-        new_routes_content << "end"
+        File.write("./src/controllers/#{controller_name}_controller.cr", new_file_content.join("\n"))
+      else
+        File.write("./src/controllers/#{controller_name}_controller.cr", ECR.render("./lib/calm/src/templates/controller_template.ecr"))
+      end
 
-        File.write("./src/config/routes.cr", new_routes_content.join("\n"))
+      return 0
+    end
+
+    private def generate_policy
+      policy_name = ARGV[1]
+      policy_name_capitalized = ARGV[1].camelcase
+      action_content = ""
+
+      if ARGV.size == 3
+        action_name = ARGV[2]
+
+        action_content = ECR.render("./lib/calm/src/templates/policy/partial.ecr")
+      end
+
+      if File.exists?("./src/policies/#{policy_name}_controller_policy.cr")
+        return if ARGV.size == 2
+
+        original_file_content = File.read_lines("./src/policies/#{policy_name}_controller_policy.cr")
+        new_file_content = [] of String
+        original_file_content.each_with_index do |line, index|
+          new_file_content << line
+          if index == 0
+            new_file_content << action_content
+            new_file_content << ""
+          end
+        end
+        File.write("./src/policies/#{policy_name}_controller_policy.cr", new_file_content.join("\n"))
+      else
+        File.write("./src/policies/#{policy_name}_controller_policy.cr", ECR.render("./lib/calm/src/templates/policy/policy_template.ecr"))
+      end
+
+      return 0
+    end
+
+    private def generate_view
+      view_name = ARGV[1]
+      view_name_capitalized = ARGV[1].camelcase
+      action_content = ""
+
+      if ARGV.size == 3
+        action_name = ARGV[2]
+
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/index_partial.ecr") if action_name == "index"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/show_partial.ecr") if action_name == "show"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/add_partial.ecr") if action_name == "add"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/create_partial.ecr") if action_name == "create"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/edit_partial.ecr") if action_name == "edit"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/update_partial.ecr") if action_name == "update"
+        action_content = ECR.render("./lib/calm/src/templates/view_actions/destroy_partial.ecr") if action_name == "destroy"
+      end
+
+      if File.exists?("./src/controllers/#{view_name}_controller.cr")
+        return if ARGV.size == 2
+
+        original_file_content = File.read_lines("./src/controllers/#{view_name}_controller.cr")
+        new_file_content = [] of String
+        original_file_content.each_with_index do |line, index|
+          new_file_content << line
+          if index == 0
+            new_file_content << action_content
+            new_file_content << ""
+          end
+        end
+        File.write("./src/controllers/#{view_name}_controller.cr", new_file_content.join("\n"))
+      else
+        File.write("./src/controllers/#{view_name}_controller.cr", ECR.render("./lib/calm/src/templates/controller_template.ecr"))
       end
 
       return 0

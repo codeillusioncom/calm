@@ -1,0 +1,13 @@
+  def show(context, vars)
+    context.ui do
+      h1 { t(".title") }
+
+      div(id: "test") do
+        "It works!"
+      end
+
+      a(href: "#", "hx-get": Calm::Routes.post_controller__show, "hx-target": "#test", "hx-push-url": "true") do
+        "Test link"
+      end
+    end
+  end

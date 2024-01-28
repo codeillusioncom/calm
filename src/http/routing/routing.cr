@@ -7,7 +7,6 @@ module Calm
         def self.route_matches(path, context)
           path_split = path.split("/")
           request_split = context.request.path.split("/")
-
           return false unless path_split.size == request_split.size
 
           res = {} of String => String
@@ -35,13 +34,12 @@ module Calm
           else
             # obj = Calm.routes.routes.select { |r| r.path.match(context.request.path) && r.type.upcase == context.request.method }
             obj = Calm.routes.routes.select { |r| Calm::Http::Handler::Routing.route_matches(r.path, context) && r.type.upcase == context.request.method }
-            if !obj.nil? && obj.size == 1
+            if !obj.nil? && obj.size >= 1
               # TODO: JSON
               context.response.content_type = "text/html"
-
+              # if it is here, do we need in controllers?
               context.check_permission!
-
-              controller_content = obj[0].callback.call context
+              controller_content = obj.last.callback.call context
 
               template_content = ApplicationView.new.index(context, &-> : String { controller_content })
 
@@ -58,9 +56,9 @@ module Calm
 
         def self.get_route(path, context)
           # TODO: type
-          selected_routes = Calm.routes.routes.select { |r| route_matches(r.path, context) }
-          if selected_routes.size == 1
-            return selected_routes[0]
+          selected_routes = Calm.routes.routes.select { |r| route_matches(r.path, context) && r.type.upcase == context.request.method }
+          if selected_routes.size >= 1
+            return selected_routes.last
           else
             return nil
           end

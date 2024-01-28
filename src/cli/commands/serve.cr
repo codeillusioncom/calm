@@ -35,13 +35,8 @@ module Calm
 
           neww = FILE_TIMESTAMPS
 
-          pp old
-          pp neww
-
           if old == {} of String => String
-            puts "ez az elso inditas"
           else
-            puts "mar van erteke"
             if old != neww
               return true
             end

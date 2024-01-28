@@ -54,6 +54,10 @@ module Calm
       get_post_delete({{route}}, {{mapping}}, "post", {{view}})
     end
 
+    macro put(route, mapping, view = nil)
+      get_post_delete({{route}}, {{mapping}}, "put", {{view}})
+    end
+
     macro delete(route, mapping, view = nil)
       get_post_delete({{route}}, {{mapping}}, "delete", {{view}})
     end
