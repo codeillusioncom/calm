@@ -20,6 +20,8 @@ dependencies:
     branch: master
   water:
     github: shootingfly/water
+  marionette:
+    github: watzon/marionette
 
 crystal: 1.10.1
 

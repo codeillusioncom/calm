@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Calm::Orm::Base do
+describe Calm::Db::Base do
   # ################### base_store #########################
   it "sets persisted to false after instantiating" do
     user = User.new

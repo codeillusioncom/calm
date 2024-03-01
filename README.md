@@ -43,19 +43,19 @@ Run migrations with `crystal run src/blog.cr -- db migrate`
 
 The config file is located at `src/config/settings.cr`
 
-### @project_name
+### @project\_name
 
 name of the project as String. It is used where we need to use the project name as a String.
 
-### @auth_token_expiration
+### @auth\_token\_expiration
 
 it is an integer, and the token expires after n minutes where n is the value of this.
 
-### @auth_token_secret
+### @auth\_token\_secret
 
 needed to encript the token, don't share this secret with anyone. It's a String.
 
-### @database_url
+### @database\_url
 
 how to connect to the database. Currently only postgresql is supported. The format is: `"postgres://username:password@hostname:port/databasename_environment`
 
@@ -63,7 +63,7 @@ how to connect to the database. Currently only postgresql is supported. The form
 
 use more detailed debugging or not. A boolean.
 
-### @default_locale
+### @default\_locale
 
 the default locale of the application. A two-letters String.
 
@@ -71,11 +71,11 @@ the default locale of the application. A two-letters String.
 
 where the server listens on. Hostname or IP address as a String.
 
-### @items_on_page
+### @items\_on\_page
 
 how many rows are visible at the same time while using the table component. An integer.
 
-### @log_level
+### @log\_level
 
 the logging level. `::Log::Severity::Trace, ::Log::Severity::Debug, ::Log::Severity::Info, ::Log::Severity::Notice, ::Log::Severity::Warn, ::Log::Severity::Error, ::Log::Severity::Fatal`. It is an object.
 
@@ -83,20 +83,20 @@ the logging level. `::Log::Severity::Trace, ::Log::Severity::Debug, ::Log::Sever
 
 an integer, the port where the server listens on.
 
-### @refresh_token_expiration
+### @refresh\_token\_expiration
 
 it is an integer, and the token expires after n minutes where n is the value of this.
 
 
-### @refresh_token_secret
+### @refresh\_token\_secret
 
 needed to encript the token, don't share this secret with anyone. It's a String.
 
-### @time_zone
+### @time\_zone
 
 The time zone as an object. `Time::Location.load("UTC")`
 
-### @x_frame_options
+### @x\_frame\_options
 
 "The X-Frame-Options HTTP response header can be used to indicate whether a browser should be allowed to render a page in a `<frame>`, `<iframe>`, `<embed>` or `<object>`. Sites can use this to avoid click-jacking attacks, by ensuring that their content is not embedded into other sites." By default it is `DENY`.
 
@@ -163,8 +163,6 @@ end
 You can use `index`, `show`, `add`, `create`, `edit`, `update`, `destroy` as the action name.
 
 #### index action
-
-
 
 Without the action it generates a controller file without any actions.
  
@@ -234,3 +232,33 @@ models are located at `src/models`.
 * yyy
 * zzz
 
+## view methods
+
+### render
+
+Create a class for example:
+
+```
+class NavigationsView < Calm::BasicView
+  def render
+    @context.ui do
+      div(class: "container-fluid") do
+        a(class: "nav-link active", "aria-current": "page", href: "/home") { "Home" }
+      end
+    end
+  end
+end
+```
+And use it in your view code anywhere:
+
+`render NavigationsView`
+
+# testing
+
+## installation
+
+### MacOS
+
+* `brew install chromedriver`
+* install Chrome
+* `crystal spec/test1.cr`

@@ -38,7 +38,7 @@ module Calm
       end
     end
 
-    macro def_tag(tag)
+    macro def_tag(tag, oneline = false)
       def {{tag.id}}(**attributes, &block)
         id_str = ""
         #id_str = " id=\"#{id}\"" unless id.nil?
@@ -49,16 +49,33 @@ module Calm
 
         @current_indent += 1
         spaces = "  " * @current_indent
-        @lines << "#{spaces}<{{tag.id}}#{id_str}#{attributes_str}>"
-        body = yield
-        unless body.nil?
-          @lines << "#{spaces}  " + body
-          @indents << @current_indent
+
+
+        if {{ oneline }}
+          body = yield
+          if body.nil?
+            @lines << "#{spaces}<{{tag.id}}#{id_str}#{attributes_str}></{{tag.id}}>"
+          else
+            @lines << "#{spaces}<{{tag.id}}#{id_str}#{attributes_str}>#{body}</{{tag.id}}>"
+          end
+        else
+          @lines << "#{spaces}<{{tag.id}}#{id_str}#{attributes_str}>"
+          body = yield
+          unless body.nil?
+            spaces_old = spaces
+            spaces += "  "
+            @lines << "#{spaces}" + body
+            @indents << @current_indent
+            spaces = spaces_old
+          end
+          @lines << "#{spaces}</{{tag.id}}>"
+          @current_indent -= 1
         end
-        @lines << "#{spaces}</{{tag.id}}>"
-        @current_indent -= 1
 
         return nil
+      end
+      def {{tag.id}}(**attributes)
+        {{tag.id}}(**attributes) {}
       end
     end
 
@@ -102,15 +119,12 @@ module Calm
     def_tag("span")
     def_tag("ul")
     def_tag("li")
-    def_simple_tag("hr")
+    def_tag("hr", oneline: true)
     def_tag("script")
     def_tag("div")
     def_tag("form")
-
-    def simple_form(obj, action = "post", &block)
-      @lines << "sss"
-
-      return nil
-    end
+    def_tag("label", oneline: true)
+    def_simple_tag("input")
+    def_tag("textarea", oneline: true)
   end
 end

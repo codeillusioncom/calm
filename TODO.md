@@ -3,7 +3,9 @@
 * navbar active
 * navbar permissions
 * SQL join
+* SQL cache
 
 * generate controller post+policy index /posts
-* generate controller view index /posts # / show / edit / delete / update / create
+* generate policy post index /posts
+* generate view post index /posts # / show / edit / delete / update / create
 * 

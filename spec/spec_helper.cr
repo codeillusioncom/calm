@@ -14,6 +14,10 @@ require "../src/i18n/*"
 
 require "spec"
 
+options = Marionette.chrome_options(args: ["headless"])
+# session = WebDriver.create_session(:chrome, capabilities: options)
+TEST_SESSION = WebDriver.create_session(:chrome)
+
 # Spec.around_each do |spec|
 #  DB.open Calm.settings.database_url do |db|
 #    # TODO: schema

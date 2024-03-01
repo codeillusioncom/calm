@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Calm::Orm::Base do
+describe Calm::Db::Base do
   it "checks type conversion and storing" do
     user = User.new
 
